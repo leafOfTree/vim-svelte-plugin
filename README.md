@@ -13,7 +13,7 @@ You can use your favourite plugin manager. For example,
 - Use [vim-pathogen][5]
 
         cd ~/.vim/bundle && \
-        git clone https://github.com/leafOfTree/vim-svelte-plugin
+        git clone https://github.com/leafOfTree/vim-svelte-plugin --depth 1
 
 - Use [vim-plug][7]
 
@@ -64,6 +64,8 @@ Ex:
 
 <img alt="screenshot" src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-theme.png" width="600" />
 
+> syntax color: [vim-svelte-theme][11]
+
 ## Context based behavior
 
 As there are more than one language in `.svelte` file, the different behaviors like mapping or completion may be expected under different tags.
@@ -94,6 +96,7 @@ Currently vim-emmet works regarding your HTML/CSS/JavaScript emmet settings, but
 
 ## See also
 
+- [vim-svelte-theme][11]
 - [vim-vue-plugin][3]
 - [mxw/vim-jsx][1]
 
@@ -108,3 +111,4 @@ This plugin is under [The Unlicense][8].
 [7]: https://github.com/junegunn/vim-plug
 [8]: https://choosealicense.com/licenses/unlicense/
 [10]: https://github.com/mattn/emmet-vim
+[11]: https://github.com/leafOfTree/vim-svelte-theme
