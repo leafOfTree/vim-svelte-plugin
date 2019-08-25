@@ -92,7 +92,7 @@ endfunction
 
 Currently vim-emmet works regarding your HTML/CSS/JavaScript emmet settings, but it depends on how vim-emmet gets `filetype` and may change in the future. Feel free to report an issue if any problem appears.
 
-## Acknowledgments & Refs
+## See also
 
 - [vim-vue-plugin][3]
 - [mxw/vim-jsx][1]
