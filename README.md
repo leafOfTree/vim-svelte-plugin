@@ -102,10 +102,7 @@ This plugin is under [The Unlicense][8].
 [1]: https://github.com/mxw/vim-jsx "mxw: vim-jsx"
 [2]: https://github.com/VundleVim/Vundle.vim
 [3]: https://github.com/leafOfTree/vim-vue-plugin
-[4]: https://github.com/digitaltoad/vim-pug
 [5]: https://github.com/tpope/vim-pathogen
-[6]: https://tencent.github.io/wepy
 [7]: https://github.com/junegunn/vim-plug
 [8]: https://choosealicense.com/licenses/unlicense/
-[9]: https://github.com/groenewege/vim-less
 [10]: https://github.com/mattn/emmet-vim
