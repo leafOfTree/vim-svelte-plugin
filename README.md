@@ -58,7 +58,7 @@ Ex:
 
 **Note**: `filetype` is set to `svelte` so autocmds and other settings for `javascript` have to be manually enabled for `svelte`.
 
-**Noet**:  See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass in svelte.
+**Note**:  See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass in svelte.
 
 ## Screenshot
 
