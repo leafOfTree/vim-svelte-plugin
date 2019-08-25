@@ -33,7 +33,7 @@ The plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel 
 Supports
 
 - Svelte directives.
-- Less/Sass/Scss (see Configuration).
+- Less/Sass/Scss (see Configuration.).
 - [vim-emmet][10] HTML/CSS/JavaScript filetype detection.
 - A builtin foldexpr fold method.
 
@@ -57,6 +57,8 @@ Ex:
 \*: Vim may be slow if the feature is enabled. Find a balance between syntax highlight and speed. By the way, custom syntax could be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`.
 
 **Note**: `filetype` is set to `svelte` so autocmds and other settings for `javascript` have to be manually enabled for `svelte`.
+
+**Noet**:  See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass in svelte.
 
 ## Screenshot
 
