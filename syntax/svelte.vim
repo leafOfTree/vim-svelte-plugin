@@ -131,18 +131,23 @@ syntax match htmlArg '\v<data(-[.a-z0-9]+)+>' containedin=@HTMLSyntax
 " Syntax highlight {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" All start with html/javascript/css for vim-emmet type detection
+" All start with html/javascript/css for emmet-vim type detection
 syntax region htmlSvelteTemplate 
-      \ start="<[-a-zA-Z0-9]\+\(\s.\{-}\)\?>" 
-      \ end="^</[-a-zA-Z0-9]\+>" 
+      \ start="<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?>" 
+      \ end="^</[-:a-zA-Z0-9]\+>" 
       \ keepend contains=@HTMLSyntax
+" Tag in one line
+syntax match htmlSvelteTemplate 
+      \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?>.*</[-:a-zA-Z0-9]\+>" 
+      \ contains=@HTMLSyntax
+" Empty tag in one line
+syntax match htmlSvelteTemplate 
+      \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?\s*/>" 
+      \ contains=@HTMLSyntax
+" Control block
 syntax region htmlSvelteTemplate 
       \ start="{#[-a-zA-Z0-9]\+\(\s.\{-}\)\?}" 
       \ end="^{/[-a-zA-Z0-9]\+}" 
-      \ keepend contains=@HTMLSyntax
-" one line tag
-syntax match htmlSvelteTemplate 
-      \ "<[-a-zA-Z0-9]\+\(\s.\{-}\)\?>.*</[-a-zA-Z0-9]\+>" 
       \ keepend contains=@HTMLSyntax
 
 syntax region javascriptSvelteScript 
