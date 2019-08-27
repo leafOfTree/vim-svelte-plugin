@@ -56,9 +56,13 @@ Ex:
 
 \*: Vim may be slow if the feature is enabled. Find a balance between syntax highlight and speed. By the way, custom syntax could be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`.
 
-**Note**: `filetype` is set to `svelte` so autocmds and other settings for `javascript` have to be manually enabled for `svelte`.
+**Note**
 
-**Note**:  See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass in svelte.
+- `filetype` is set to `svelte` so autocmds and other settings for `javascript` have to be manually enabled for `svelte`.
+
+- See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass in svelte.
+
+- `g:vim_vue_plugin_use_foldexpr` default value used to be `1`. But there are other foldmethod choices, so it's changed to `0`.
 
 ## Screenshot
 
