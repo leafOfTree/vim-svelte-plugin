@@ -132,47 +132,47 @@ syntax match htmlArg '\v<data(-[.a-z0-9]+)+>' containedin=@HTMLSyntax
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " All start with html/javascript/css for emmet-vim type detection
-syntax region htmlSvelteTemplate 
+syntax region htmlSvelteTemplate fold
       \ start="<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?>" 
       \ end="^</[-:a-zA-Z0-9]\+>" 
       \ keepend contains=@HTMLSyntax
 " Tag in one line
-syntax match htmlSvelteTemplate 
+syntax match htmlSvelteTemplate fold
       \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?>.*</[-:a-zA-Z0-9]\+>" 
       \ contains=@HTMLSyntax
 " Empty tag in one line
-syntax match htmlSvelteTemplate 
+syntax match htmlSvelteTemplate fold
       \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?\s*/>" 
       \ contains=@HTMLSyntax
 " @html,@debug tag in one line
-syntax match htmlSvelteTemplate 
+syntax match htmlSvelteTemplate fold
       \ "{@\(html\|debug\)\(\s.\{-}\)\?\s*}" 
       \ contains=@HTMLSyntax
 " Control block
-syntax region htmlSvelteTemplate 
+syntax region htmlSvelteTemplate fold
       \ start="{#[-a-zA-Z0-9]\+\(\s.\{-}\)\?}" 
       \ end="^{/[-a-zA-Z0-9]\+}" 
       \ keepend contains=@HTMLSyntax
 
-syntax region javascriptSvelteScript 
+syntax region javascriptSvelteScript fold
       \ start="<script\(\s.\{-}\)\?>" 
       \ end="</script>" 
       \ keepend 
       \ contains=@htmlJavaScript,jsImport,jsExport,svelteTag,svelteKeyword
 
-syntax region cssSvelteStyle 
+syntax region cssSvelteStyle fold
       \ start="<style\(\s.\{-}\)\?>" 
       \ end="</style>" 
       \ keepend contains=@htmlCss,svelteTag
-syntax region cssLessSvelteStyle 
+syntax region cssLessSvelteStyle fold
       \ start=+<style lang="less"\(\s.\{-}\)\?>+ 
       \ end=+</style>+ 
       \ keepend contains=@LessSyntax,svelteTag
-syntax region cssSassSvelteStyle 
+syntax region cssSassSvelteStyle fold
       \ start=+<style lang="sass"\(\s.\{-}\)\?>+ 
       \ end=+</style>+ 
       \ keepend contains=@SassSyntax,svelteTag
-syntax region cssScssSvelteStyle 
+syntax region cssScssSvelteStyle fold
       \ start=+<style lang="scss"\(\s.\{-}\)\?>+ 
       \ end=+</style>+ 
       \ keepend contains=@SassSyntax,svelteTag
