@@ -3,9 +3,8 @@
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:foldmethod = exists("g:vim_svelte_plugin_foldmethod") 
-      \ ? g:vim_svelte_plugin_foldmethod 
-      \ : ''
+let s:use_foldexpr = exists("g:vim_svelte_plugin_use_foldexpr") 
+      \ && g:vim_svelte_plugin_use_foldexpr == 1
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -13,16 +12,10 @@ let s:foldmethod = exists("g:vim_svelte_plugin_foldmethod")
 " Settings {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if s:foldmethod == 'syntax'
-  setlocal foldmethod=syntax
-elseif s:foldmethod == 'expr'
+if s:use_foldexpr
   setlocal foldmethod=expr
   setlocal foldexpr=GetSvelteFold(v:lnum)
-elseif s:foldmethod
-  let &l:foldmethod = s:foldmethod
-endif
-
-if s:foldmethod != 'expr'
+else
   finish
 endif
 "}}}
