@@ -7,17 +7,15 @@ let s:use_foldexpr = exists("g:vim_svelte_plugin_use_foldexpr")
       \ && g:vim_svelte_plugin_use_foldexpr == 1
 "}}}
 
+if !s:use_foldexr | finish | endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Settings {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if s:use_foldexpr
-  setlocal foldmethod=expr
-  setlocal foldexpr=GetSvelteFold(v:lnum)
-else
-  finish
-endif
+setlocal foldmethod=expr
+setlocal foldexpr=GetSvelteFold(v:lnum)
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
