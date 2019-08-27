@@ -34,7 +34,7 @@ Supports
 
 - Svelte directives.
 - Less/Sass/Scss (see Configuration.).
-- A built 'expr' foldmehthod (see Configuration).
+- A builtin 'expr' foldmehthod (see Configuration).
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
 
 ## Configuration
