@@ -12,9 +12,16 @@ let s:highlight_svelte_attr = exists("g:vim_svelte_plugin_highlight_svelte_attr"
 " Syntax highlight {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax match svelteComponentName 
-      \ '\v\C<[A-Z][a-zA-Z0-9]+(\.[A-Z][a-zA-Z0-9]+)*>'
-      \ containedin=htmlTagN 
+syntax match svelteComponentName containedin=htmlTagN '\v\C<[A-Z][a-zA-Z0-9]+(\.[A-Z][a-zA-Z0-9]+)*>'
+
+syntax match svelteComponentName containedin=htmlTagN '\v\C<[a-z0-9]+(-[a-z0-9]+)+>'
+
+syntax match svelteComponentName containedin=htmlTagN '\vsvelte:\w*'
+
+" Syntax for vim-svelte-theme
+syntax match htmlAttr '\v(\S|\<)@<![^\<\>[:blank:]]+' containedin=htmlTag
+      \ contains=htmlString,svelteValue,htmlArg
+syntax match htmlAttrEqual '\v\=' containedin=htmlAttr
 
 syntax match svelteAttr 
       \ '\v(\S)@<!(on|bind|use):[^\=\>[:blank:]]+(\=\"[^"]*\"|\=\{[^}]*\})?'
@@ -91,5 +98,7 @@ highlight default link javaScriptStringS String
 highlight default link javaScriptStringD String
 highlight default link javaScriptNumber	Constant
 highlight default link javaScriptOperator	Operator
+highlight default link svelteAttr	htmlTag
+highlight default link svelteAttrEqual htmlTag
 "}}}
 " vim: fdm=marker
