@@ -144,6 +144,10 @@ syntax match htmlSvelteTemplate
 syntax match htmlSvelteTemplate 
       \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?\s*/>" 
       \ contains=@HTMLSyntax
+" @html,@debug tag in one line
+syntax match htmlSvelteTemplate 
+      \ "{@\(html\|debug\)\(\s.\{-}\)\?\s*}" 
+      \ contains=@HTMLSyntax
 " Control block
 syntax region htmlSvelteTemplate 
       \ start="{#[-a-zA-Z0-9]\+\(\s.\{-}\)\?}" 

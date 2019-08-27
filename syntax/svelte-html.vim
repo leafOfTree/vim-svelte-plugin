@@ -41,11 +41,13 @@ syntax region svelteExpression
 
 syntax region svelteExpression 
       \ containedin=htmlSvelteTemplate,svelteValue,htmlString,htmlValue,htmlArg,htmlTag
-      \ contains=@simpleJavascriptExpression
+      \ contains=@simpleJavascriptExpression,svelteAtTags
       \ matchgroup=svelteBrace
       \ transparent
       \ start="{"
       \ end="}\(}\)\@!"
+
+syntax match svelteAtTags '\v\@(html|debug)'
 
 syntax region svelteBlockBody
       \ containedin=htmlSvelteTemplate
