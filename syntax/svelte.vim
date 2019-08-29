@@ -131,7 +131,7 @@ syntax match htmlArg '\v<data(-[.a-z0-9]+)+>' containedin=@HTMLSyntax
 " Syntax highlight {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" All start with html/javascript/css for emmet-vim type detection
+" All start with html/javascript/css for emmet-vim in-file type detection
 syntax region htmlSvelteTemplate fold
       \ start="<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?>" 
       \ end="^</[-:a-zA-Z0-9]\+>" 
