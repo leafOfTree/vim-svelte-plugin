@@ -170,13 +170,18 @@ if has("patch-7.4-1142")
 endif
 
 " Style
-" Redefine syn-region to color <style> correctly.
+" Redefine syn-region to color <style> correctly and 
+" enable emmet-vim css type.
 if s:use_less
-  syntax region lessDefinition matchgroup=cssBraces contains=@LessSyntax contained
+  syntax clear lessDefinition
+  syntax region cssLessDefinition matchgroup=cssBraces contains=@LessSyntax 
+        \ containedin=cssLessSvelteStyle
         \ start="{" end="}" 
 endif
 if s:use_sass
-  syntax region sassDefinition matchgroup=cssBraces contains=@SassSyntax contained
+  syntax clear sassDefinition
+  syntax region cssSassDefinition matchgroup=cssBraces contains=@SassSyntax 
+        \ containedin=cssSassSvelteStyle,cssScssSvelteStyle
         \ start="{" end="}" 
 endif
 
