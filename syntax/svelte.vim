@@ -175,13 +175,13 @@ endif
 if s:use_less
   syntax clear lessDefinition
   syntax region cssLessDefinition matchgroup=cssBraces contains=@LessSyntax 
-        \ containedin=cssLessSvelteStyle
+        \ contained containedin=cssLessSvelteStyle
         \ start="{" end="}" 
 endif
 if s:use_sass
   syntax clear sassDefinition
   syntax region cssSassDefinition matchgroup=cssBraces contains=@SassSyntax 
-        \ containedin=cssScssSvelteStyle,cssSassSvelteStyle
+        \ contained containedin=cssScssSvelteStyle,cssSassSvelteStyle
         \ start="{" end="}" 
 endif
 
