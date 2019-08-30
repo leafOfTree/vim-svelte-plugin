@@ -108,11 +108,11 @@ syntax match htmlSvelteTemplate fold
       \ contains=@HTMLSyntax
 " Empty tag in one line
 syntax match htmlSvelteTemplate fold
-      \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?\s*/>" 
+      \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?/>" 
       \ contains=@HTMLSyntax
 " @html,@debug tag in one line
 syntax match htmlSvelteTemplate fold
-      \ "{@\(html\|debug\)\(\s.\{-}\)\?\s*}" 
+      \ "{@\(html\|debug\)\(\s.\{-}\)\?}" 
       \ contains=@HTMLSyntax
 " Control block
 syntax region htmlSvelteTemplate fold
@@ -181,7 +181,7 @@ endif
 if s:use_sass
   syntax clear sassDefinition
   syntax region cssSassDefinition matchgroup=cssBraces contains=@SassSyntax 
-        \ containedin=cssSassSvelteStyle,cssScssSvelteStyle
+        \ containedin=cssScssSvelteStyle,cssSassSvelteStyle
         \ start="{" end="}" 
 endif
 
@@ -190,7 +190,8 @@ endif
 syntax clear htmlHead
 
 " Number with minus
-syntax match javaScriptNumber '\v<-?\d+L?>|0[xX][0-9a-fA-F]+>' containedin=@javascriptSvelteScript
+syntax match javaScriptNumber '\v<-?\d+L?>|0[xX][0-9a-fA-F]+>' 
+      \ containedin=@javascriptSvelteScript display
 
 " html5 data-*
 syntax match htmlArg '\v<data(-[.a-z0-9]+)+>' containedin=@HTMLSyntax
