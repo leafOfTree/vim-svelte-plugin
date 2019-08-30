@@ -60,9 +60,9 @@ Ex:
 
 - `filetype` is set to `svelte` so autocmds and other settings for `javascript` have to be manually enabled for `svelte`.
 
-- See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass in svelte.
-
 - `g:vim_svelte_plugin_use_foldexpr` default value used to be `1`. But there are other foldmethod choices, so it's changed to `0`.
+
+- See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass in svelte.
 
 ## Screenshot
 
