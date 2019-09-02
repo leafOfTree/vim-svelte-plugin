@@ -144,10 +144,10 @@ syntax region cssScssSvelteStyle fold
       \ keepend contains=@SassSyntax,svelteTag
 
 syntax region svelteTag 
-      \ start="<[^/]" end=">" 
+      \ start="^<[^/]" end=">" 
       \ contained contains=htmlTagN,htmlString,htmlArg fold
 syntax region svelteTag 
-      \ start="</" end=">" 
+      \ start="^</" end=">" 
       \ contained contains=htmlTagN,htmlString,htmlArg
 syntax keyword svelteKeyword $ contained
 
