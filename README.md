@@ -49,7 +49,7 @@ Ex:
 |---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|----------------------------|
 | `g:vim_svelte_plugin_load_full_syntax`\* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0 |
 | `g:vim_svelte_plugin_use_less`              | Enable less syntax for `<style lang="less">`.                                                          | 0 |
-| `g:vim_svelte_plugin_use_sass`              | Enable sass/scss syntax for `<style lang="sass">`(or scss).                                            | 0 |
+| `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or lang="sass" for sass).                                 | 0 |
 | `g:vim_svelte_plugin_has_init_indent`       | Initially indent one tab inside `style/script` tags.                                                   | 1 |
 | `g:vim_svelte_plugin_use_foldexpr`          | Enable builtin foldexpr fold method.                                                                   | 0 |
 | `g:vim_svelte_plugin_debug`                 | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                   | 0 |
