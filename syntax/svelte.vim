@@ -137,11 +137,11 @@ syntax region cssLessSvelteStyle fold
 syntax region cssSassSvelteStyle fold
       \ start=+<style lang="sass"\(\s.\{-}\)\?>+ 
       \ end=+</style>+ 
-      \ keepend contains=@SassSyntax,svelteTag
+      \ keepend contains=@SassSyntax,sassCssAttribute,svelteTag
 syntax region cssScssSvelteStyle fold
       \ start=+<style lang="scss"\(\s.\{-}\)\?>+ 
       \ end=+</style>+ 
-      \ keepend contains=@SassSyntax,svelteTag
+      \ keepend contains=@SassSyntax,sassCssAttribute,svelteTag
 
 syntax region svelteTag 
       \ start="^<[^/]" end=">" 
@@ -151,8 +151,9 @@ syntax region svelteTag
       \ contained contains=htmlTagN,htmlString,htmlArg
 syntax keyword svelteKeyword $ contained
 
-highlight def link svelteTag htmlTag
-highlight def link svelteKeyword Keyword
+highlight default link svelteTag htmlTag
+highlight default link svelteKeyword Keyword
+highlight default link cssUnitDecorator Number
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -170,7 +171,7 @@ if has("patch-7.4-1142")
 endif
 
 " Style
-" Redefine syn-region to color <style> correctly and 
+" Redefine (less|sass)Definition to highlight <style> correctly and 
 " enable emmet-vim css type.
 if s:use_less
   syntax clear lessDefinition
@@ -184,6 +185,12 @@ if s:use_sass
         \ contained containedin=cssScssSvelteStyle,cssSassSvelteStyle
         \ start="{" end="}" 
 endif
+
+" Redefine css syntax to highlight css unit correctly
+syntax clear cssUnitDecorators
+syntax match cssUnitDecorator 
+      \ /\(#\|-\|+\|%\|mm\|cm\|in\|pt\|pc\|em\|ex\|px\|ch\|rem\|vh\|vw\|vmin\|vmax\|dpi\|dppx\|dpcm\|Hz\|kHz\|s\|ms\|deg\|grad\|rad\)\ze\(;\|$\)/
+      \ containedin=cssAttrRegion,sassCssAttribute,lessCssAttribute
 
 " HTML
 " Clear htmlHead that may cause highlighting out of bounds
