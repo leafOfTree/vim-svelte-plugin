@@ -81,14 +81,14 @@ endif
 " Load pre-processors syntax {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" If sass is enabled, load sass syntax 
-if s:use_sass
-  call s:LoadSyntax('@SassSyntax', 'sass')
-endif
-
 " If less is enabled, load less syntax 
 if s:use_less
   call s:LoadSyntax('@LessSyntax', 'less')
+endif
+
+" If sass is enabled, load sass syntax 
+if s:use_sass
+  call s:LoadSyntax('@SassSyntax', 'sass')
 endif
 "}}}
 
@@ -137,11 +137,11 @@ syntax region cssLessSvelteStyle fold
 syntax region cssSassSvelteStyle fold
       \ start=+<style lang="sass"\(\s.\{-}\)\?>+ 
       \ end=+</style>+ 
-      \ keepend contains=@SassSyntax,sassCssAttribute,svelteTag
+      \ keepend contains=@SassSyntax,svelteTag
 syntax region cssScssSvelteStyle fold
       \ start=+<style lang="scss"\(\s.\{-}\)\?>+ 
       \ end=+</style>+ 
-      \ keepend contains=@SassSyntax,sassCssAttribute,svelteTag
+      \ keepend contains=@SassSyntax,svelteTag
 
 syntax region svelteTag 
       \ start="^<[^/]" end=">" 
@@ -186,7 +186,7 @@ if s:use_sass
         \ start="{" end="}" 
 endif
 
-" Redefine css syntax to highlight css unit correctly
+" Highlight css unit correctly
 syntax clear cssUnitDecorators
 syntax match cssUnitDecorator 
       \ /\(#\|-\|+\|%\|mm\|cm\|in\|pt\|pc\|em\|ex\|px\|ch\|rem\|vh\|vw\|vmin\|vmax\|dpi\|dppx\|dpcm\|Hz\|kHz\|s\|ms\|deg\|grad\|rad\)\ze\(;\|$\)/
@@ -196,6 +196,7 @@ syntax match cssUnitDecorator
 " Clear htmlHead that may cause highlighting out of bounds
 syntax clear htmlHead
 
+" JavaScript
 " Number with minus
 syntax match javaScriptNumber '\v<-?\d+L?>|0[xX][0-9a-fA-F]+>' 
       \ containedin=@javascriptSvelteScript display
