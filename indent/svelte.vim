@@ -70,7 +70,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 setlocal sw=2 ts=2
 " JavaScript indentkeys
-setlocal indentkeys=0{,0},0),0],0\,,!^F,o,O,e
+setlocal indentkeys=0{,0},0),0],0\,,!^F,o,O,e,:,=:else
 " XML indentkeys
 setlocal indentkeys+=*<Return>,<>>,<<>,/
 setlocal indentexpr=GetSvelteIndent()
@@ -82,6 +82,7 @@ setlocal indentexpr=GetSvelteIndent()
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! GetSvelteIndent()
+  echom 'get svelte indent'
   let prevlnum = prevnonblank(v:lnum-1)
   let prevline = getline(prevlnum)
   let prevsyns = s:SynsSOL(prevlnum)
