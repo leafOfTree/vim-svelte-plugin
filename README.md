@@ -119,7 +119,7 @@ For example, the builtin syntax `sass.vim` and `less.vim` in vim8.1 runtime will
 
 ## License
 
-This plugin is under [The Unlicense][8].
+This plugin is under [The Unlicense][8]. Other than this, `lib/indent/*` files are extracted from vim runtime.
 
 [1]: https://github.com/mxw/vim-jsx "mxw: vim-jsx"
 [2]: https://github.com/VundleVim/Vundle.vim
