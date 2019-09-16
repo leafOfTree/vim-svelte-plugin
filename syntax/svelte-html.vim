@@ -71,13 +71,21 @@ syntax region svelteBlockEnd
 
 syntax keyword svelteBlockKeyword if else each await then catch as
 
-syntax cluster simpleJavascriptExpression contains=javaScriptStringS,javaScriptStringD,javascriptNumber,javaScriptOperator
+syntax cluster simpleJavascriptExpression 
+      \ contains=javaScriptStringS,javaScriptStringD,javaScriptTemplateString,javascriptNumber,javaScriptOperator
 
 " Redefine JavaScript syntax
-syntax region  javaScriptStringS	
-      \ start=+'+  skip=+\\\\\|\\'+  end=+'\|$+	contained
-syntax region  javaScriptStringD	
-      \ start=+"+  skip=+\\\\\|\\"+  end=+"\|$+	contained
+syntax region javaScriptStringS	
+      \ start=+'+ skip=+\\\\\|\\'+ end=+'\|$+	contained
+syntax region javaScriptStringD	
+      \ start=+"+ skip=+\\\\\|\\"+ end=+"\|$+	contained
+syntax region javaScriptTemplateString
+      \ start=+`+ skip=+\\`+ end=+`+ contained
+      \ contains=javaScriptTemplateExpression
+syntax region javaScriptTemplateExpression
+      \ matchgroup=Type
+      \ start=+${+ end=+}+ keepend contained
+
 syntax match javaScriptNumber '\v<-?\d+L?>|0[xX][0-9a-fA-F]+>' contained
 syntax match javaScriptOperator '[-!|&+<>=%*~^]' contained
 syntax match javaScriptOperator '\v(*)@<!/(/|*)@!' contained
@@ -95,6 +103,7 @@ endif
 highlight default link svelteBrace Type
 highlight default link svelteBlockKeyword Statement
 highlight default link svelteComponentName htmlTagName
+highlight default link javaScriptTemplateString String
 highlight default link javaScriptStringS String
 highlight default link javaScriptStringD String
 highlight default link javaScriptNumber	Constant
