@@ -82,7 +82,6 @@ setlocal indentexpr=GetSvelteIndent()
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! GetSvelteIndent()
-  echom 'get svelte indent'
   let prevlnum = prevnonblank(v:lnum-1)
   let prevline = getline(prevlnum)
   let prevsyns = s:SynsSOL(prevlnum)
