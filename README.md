@@ -34,7 +34,7 @@ Supports
 
 - Svelte directives.
 - Less/Sass/Scss (see Configuration.).
-- A builtin `expr` foldmehthod (see Configuration).
+- A builtin `foldexpr` foldmehthod (see Configuration).
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
 
 ## Configuration
@@ -51,7 +51,7 @@ Ex:
 | `g:vim_svelte_plugin_use_less`              | Enable less syntax for `<style lang="less">`.                                                          | 0 |
 | `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or sass for lang="sass").                                 | 0 |
 | `g:vim_svelte_plugin_has_init_indent`       | Initially indent one tab inside `style/script` tags.                                                   | 1 |
-| `g:vim_svelte_plugin_use_foldexpr`          | Enable builtin foldexpr fold method.                                                                   | 0 |
+| `g:vim_svelte_plugin_use_foldexpr`          | Enable builtin `foldexpr` foldmethod.                                                                  | 0 |
 | `g:vim_svelte_plugin_debug`                 | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                   | 0 |
 
 \*: Vim may be slow if the feature is enabled. Find a balance between syntax highlight and speed. By the way, custom syntax could be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`.
