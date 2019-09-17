@@ -157,7 +157,9 @@ syntax keyword svelteKeyword $ contained
 
 highlight default link svelteTag htmlTag
 highlight default link svelteKeyword Keyword
-highlight default link cssUnitDecorator Number
+highlight default link cssUnitDecorators2 Number
+highlight default link cssKeyFrameProp2 Constant
+
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
