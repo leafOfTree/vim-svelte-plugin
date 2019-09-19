@@ -49,21 +49,21 @@ syntax region svelteExpression
 syntax match svelteAtTags '\v\@(html|debug)'
 
 syntax region svelteBlockBody
-      \ containedin=htmlSvelteTemplate
+      \ containedin=htmlSvelteTemplate,htmlLink
       \ contains=@simpleJavascriptExpression,svelteBlockKeyword
       \ matchgroup=svelteBrace
       \ start="\v\{:"
       \ end="}"
 
 syntax region svelteBlockStart
-      \ containedin=htmlSvelteTemplate
+      \ containedin=htmlSvelteTemplate,htmlLink
       \ contains=@simpleJavascriptExpression,svelteBlockKeyword
       \ matchgroup=svelteBrace
       \ start="\v\{#"
       \ end="}"
 
 syntax region svelteBlockEnd
-      \ containedin=htmlSvelteTemplate
+      \ containedin=htmlSvelteTemplate,htmlLink
       \ contains=@simpleJavascriptExpression,svelteBlockKeyword
       \ matchgroup=svelteBrace
       \ start="\v\{\/"
