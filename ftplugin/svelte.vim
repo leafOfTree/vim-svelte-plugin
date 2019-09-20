@@ -12,3 +12,8 @@ if exists("loaded_matchit")
         \ '{#\(if\|each\)[^}]*}:{\:else[^}]*}:{\/\(if\|each\)},' .
         \ '{#await[^}]*}:{\:then[^}]*}:{\/await},'
 endif
+
+" Indent correctly with template string for vim-javascript/builtin
+" indentexpr
+let b:syng_str = '^\%(.*template\)\@!.*string\|special'
+let b:syng_strcom = '^\%(.*template\)\@!.*string\|comment\|regex\|special\|doc'
