@@ -36,7 +36,7 @@ syntax region svelteExpression
       \ matchgroup=svelteBrace
       \ transparent
       \ start="{"
-      \ end="}"
+      \ end="}\(}\)\@!"
 
 syntax region svelteExpression 
       \ containedin=htmlSvelteTemplate,svelteValue,htmlString,htmlValue,htmlArg,htmlTag
@@ -46,7 +46,16 @@ syntax region svelteExpression
       \ start="{"
       \ end="}\(}\)\@!"
 
+syntax region svelteExpression 
+      \ containedin=htmlTag
+      \ contains=@simpleJavascriptExpression,svelteAtTags,svelteShortProp
+      \ matchgroup=svelteBrace
+      \ transparent
+      \ start="{"
+      \ end="}\(}\)\@!"
+
 syntax match svelteAtTags '\v\@(html|debug)'
+syntax match svelteShortProp '\v<\w+>'
 
 syntax region svelteBlockBody
       \ containedin=htmlSvelteTemplate,htmlLink
@@ -110,5 +119,6 @@ highlight default link javaScriptNumber	Constant
 highlight default link javaScriptOperator	Operator
 highlight default link svelteAttr	htmlTag
 highlight default link svelteAttrEqual htmlTag
+highlight default link svelteShortProp htmlValue
 "}}}
 " vim: fdm=marker
