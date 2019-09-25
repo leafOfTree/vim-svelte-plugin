@@ -25,7 +25,7 @@ setlocal foldexpr=GetSvelteFold(v:lnum)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:empty_line = '\v^\s*$'
 let s:block_end = '\v^\s*}|]|\)'
-let s:svelte_tag_start = '\v^\<(script|style)' 
+let s:svelte_tag_start = '\v^\<(script|style|\w+)' 
 let s:svelte_tag_end = '\v^\<\/(script|style)' 
 "}}}
 
@@ -54,38 +54,43 @@ function! GetSvelteFold(lnum)
     let prev_line = getline(a:lnum - 1)
   endif
 
-  " Handle empty or comment lines
+  " Handle empty lines
   if this_line =~ s:empty_line
     return -1
   endif
+
+  " Handle start/end tags
   if this_line =~ s:svelte_tag_start
     return '>1'
   endif
   if this_line =~ s:svelte_tag_end
-    return '<1'
+    " If return '<1', fold will get incorrect with prev line
+    return 1
   endif
 
-  " Use (indentLevel + 1) as fold level
+  " Fold by indent
   let this_indent = s:IndentLevel(a:lnum)
   let next_indent = s:IndentLevel(s:NextNonBlankLine(a:lnum))
 
   if a:lnum > 1
     let prev_indent = s:IndentLevel(a:lnum - 1)
 
-    if this_line =~ s:block_end && (this_indent < prev_indent)
+    if this_indent < prev_indent
       return prev_indent
     endif
   endif
 
   if this_indent >= next_indent 
     return this_indent
-  elseif this_indent < next_indent
+  endif
+
+  if this_indent < next_indent
     return '>'.next_indent
   endif
 endfunction
 
 function! s:IndentLevel(lnum)
-  " Add 1 to enable svelte tags to fold
+  " Add 1 to indentLevel, so start/end tags' can fold properly
   return indent(a:lnum) / &shiftwidth + 1
 endfunction
 
