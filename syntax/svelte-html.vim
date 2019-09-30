@@ -69,7 +69,7 @@ syntax region svelteBlockStart
       \ contains=@simpleJavascriptExpression,svelteBlockKeyword
       \ matchgroup=svelteBrace
       \ start="\v\{#"
-      \ end="}"
+      \ end="}\(}\)\@!"
 
 syntax region svelteBlockEnd
       \ containedin=htmlSvelteTemplate,htmlLink
