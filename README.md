@@ -1,28 +1,28 @@
 # vim-svelte-plugin
 
-Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3].
+Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3]. 
+
+[![Build Status][12]](https://travis-ci.com/leafOfTree/test)
 
 ## Install
 
-You can use your favourite plugin manager. For example, 
-
-- Use [VundleVim][2]
+- [VundleVim][2]
 
         Plugin 'leafOfTree/vim-svelte-plugin'
 
-- Use [vim-pathogen][5]
+- [vim-pathogen][5]
 
         cd ~/.vim/bundle && \
         git clone https://github.com/leafOfTree/vim-svelte-plugin --depth 1
 
-- Use [vim-plug][7]
+- [vim-plug][7]
 
         Plug 'leafOfTree/vim-svelte-plugin'
         :PlugInstall
 
-- Or manually, clone this plugin, drop it in custom `path/to/this_plugin`, and add it to `rtp` in vimrc
+- Or manually, clone this plugin to `path/to/this_plugin`, and add it to `rtp` in vimrc
 
-        set rpt+=path/to/this_plugin
+        set rtp+=path/to/this_plugin
 
 The plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel free to open an issue or a pull request.
 
@@ -33,15 +33,15 @@ The plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel 
 Supports
 
 - Svelte directives.
-- Less/Sass/Scss (see Configuration.).
-- A builtin `foldexpr` foldmehthod (see Configuration).
+- Less/Sass/Scss.^
+- A builtin `foldexpr` foldmehthod.^
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
+
+^: see Configuration for details.
 
 ## Configuration
 
-Set global variable to `1` to enable or `0` to disable.
-
-Ex:
+Set global variable to `1` to enable or `0` to disable. Ex:
 
     let g:vim_svelte_plugin_load_full_syntax = 1
 
@@ -49,7 +49,7 @@ Ex:
 |---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|----------------------------|
 | `g:vim_svelte_plugin_load_full_syntax`\* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0 |
 | `g:vim_svelte_plugin_use_less`              | Enable less syntax for `<style lang="less">`.                                                          | 0 |
-| `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or sass for lang="sass").                                 | 0 |
+| `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"`).                                 | 0 |
 | `g:vim_svelte_plugin_has_init_indent`       | Initially indent one tab inside `style/script` tags.                                                   | 1 |
 | `g:vim_svelte_plugin_use_foldexpr`          | Enable builtin `foldexpr` foldmethod.                                                                  | 0 |
 | `g:vim_svelte_plugin_debug`                 | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                   | 0 |
@@ -129,3 +129,4 @@ This plugin is under [The Unlicense][8]. Other than this, `lib/indent/*` files a
 [8]: https://choosealicense.com/licenses/unlicense/
 [10]: https://github.com/mattn/emmet-vim
 [11]: https://github.com/leafOfTree/vim-svelte-theme
+[12]: https://travis-ci.com/leafOfTree/test.svg?branch=vim-svelte-plugin
