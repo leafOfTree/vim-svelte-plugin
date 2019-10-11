@@ -20,6 +20,8 @@ let b:current_loading_main_syntax = 'svelte'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:load_full_syntax = exists("g:vim_svelte_plugin_load_full_syntax")
       \ && g:vim_svelte_plugin_load_full_syntax == 1
+let s:use_pug = exists("g:vim_svelte_plugin_use_pug")
+      \ && g:vim_svelte_plugin_use_pug == 1
 let s:use_less = exists("g:vim_svelte_plugin_use_less")
       \ && g:vim_svelte_plugin_use_less == 1
 let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
@@ -41,6 +43,7 @@ endfunction
 
 function! s:LoadDefaultSyntax(group, type)
   unlet! b:current_syntax
+
   let syntaxPaths = ['$VIMRUNTIME', '$VIM/vimfiles', '$HOME/.vim']
   for path in syntaxPaths
     let file = expand(path).'/syntax/'.a:type.'.vim'
@@ -83,6 +86,11 @@ endif
 " Load pre-processors syntax {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" If pug is enabled, load vim-pug syntax
+if s:use_pug
+  call s:LoadFullSyntax('@PugSyntax', 'pug')
+endif
+
 " If less is enabled, load less syntax 
 if s:use_less
   call s:LoadSyntax('@LessSyntax', 'less')
@@ -103,55 +111,67 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " All start with html/javascript/css for emmet-vim in-file type detection
 syntax region htmlSvelteTemplate fold
-      \ start="<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?>" 
-      \ end="^</[-:a-zA-Z0-9]\+>" 
+      \ start=+<[-:a-zA-Z0-9]\+[^>]*>+ 
+      \ end=+^</[-:a-zA-Z0-9]\+>+ 
       \ keepend contains=@HTMLSyntax
 " Tag in one line
 syntax match htmlSvelteTemplate fold
-      \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?>.*</[-:a-zA-Z0-9]\+>" 
+      \ +<[-:a-zA-Z0-9]\+[^>]*>.*</[-:a-zA-Z0-9]\+>+ 
       \ contains=@HTMLSyntax
 " Empty tag in one line
 syntax match htmlSvelteTemplate fold
-      \ "<[-:a-zA-Z0-9]\+\(\s.\{-}\)\?/>" 
+      \ +<[-:a-zA-Z0-9]\+[^>]*/>+ 
       \ contains=@HTMLSyntax
 " @html,@debug tag in one line
 syntax match htmlSvelteTemplate fold
-      \ "{@\(html\|debug\)\(\s.\{-}\)\?}" 
+      \ +{@\(html\|debug\)[^}]*}+ 
       \ contains=@HTMLSyntax
-" Control block
+" Control blocks like {#if ...}, {#each ...}
 syntax region htmlSvelteTemplate fold
-      \ start="{#[-a-zA-Z0-9]\+\(\s.\{-}\)\?}" 
-      \ end="^{/[-a-zA-Z0-9]\+}" 
+      \ start=+{#[-a-zA-Z0-9]\+[^}]*}+ 
+      \ end=+^{/[-a-zA-Z0-9]\+}+ 
       \ keepend contains=@HTMLSyntax
 
 syntax region javascriptSvelteScript fold
-      \ start="<script\(\s.\{-}\)\?>" 
-      \ end="</script>" 
+      \ start=+<script[^>]*>+ 
+      \ end=+</script>+ 
       \ keepend 
       \ contains=@htmlJavaScript,jsImport,jsExport,svelteTag,svelteKeyword
 
 syntax region cssSvelteStyle fold
-      \ start="<style\(\s.\{-}\)\?>" 
-      \ end="</style>" 
+      \ start=+<style[^>]*>+ 
+      \ end=+</style>+ 
       \ keepend contains=@htmlCss,svelteTag
+
+" Preprocessors syntax
+syntax region pugSvelteTemplate fold
+      \ start=+<template[^>]*lang="pug"[^>]*>+
+      \ end=+</template>+
+      \ keepend contains=@PugSyntax,svelteTag
+
+syntax region coffeeVueScript fold 
+      \ start=+<script[^>]*lang="coffee"[^>]*>+
+      \ end=+</script>+
+      \ keepend contains=@htmlCoffeeScript,jsImport,jsExport,vueTag
+
 syntax region cssLessSvelteStyle fold
-      \ start=+<style lang="less"\(\s.\{-}\)\?>+ 
+      \ start=+<style[^>]*lang="less"[^>]*>+ 
       \ end=+</style>+ 
       \ keepend contains=@LessSyntax,svelteTag
 syntax region cssSassSvelteStyle fold
-      \ start=+<style lang="sass"\(\s.\{-}\)\?>+ 
+      \ start=+<style[^>]*lang="sass"[^>]*>+ 
       \ end=+</style>+ 
       \ keepend contains=@SassSyntax,svelteTag
 syntax region cssScssSvelteStyle fold
-      \ start=+<style lang="scss"\(\s.\{-}\)\?>+ 
+      \ start=+<style[^>]*lang="scss"[^>]*>+ 
       \ end=+</style>+ 
       \ keepend contains=@SassSyntax,svelteTag
 
 syntax region svelteTag 
-      \ start="^<[^/]" end=">" 
+      \ start=+^<[^/]+ end=+>+ 
       \ contained contains=htmlTagN,htmlString,htmlArg fold
 syntax region svelteTag 
-      \ start="^</" end=">" 
+      \ start=+^</+ end=+>+ 
       \ contained contains=htmlTagN,htmlString,htmlArg
 syntax keyword svelteKeyword $ contained
 
@@ -159,7 +179,6 @@ highlight default link svelteTag htmlTag
 highlight default link svelteKeyword Keyword
 highlight default link cssUnitDecorators2 Number
 highlight default link cssKeyFrameProp2 Constant
-
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -194,6 +213,7 @@ endif
 
 " Avoid css syntax interference
 silent! syntax clear cssUnitDecorators
+" Have to use a different name
 syntax match cssUnitDecorators2 
       \ /\(#\|-\|+\|%\|mm\|cm\|in\|pt\|pc\|em\|ex\|px\|ch\|rem\|vh\|vw\|vmin\|vmax\|dpi\|dppx\|dpcm\|Hz\|kHz\|s\|ms\|deg\|grad\|rad\)\ze\(;\|$\)/
       \ contained

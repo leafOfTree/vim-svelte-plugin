@@ -20,6 +20,7 @@ let s:name = 'vim-svelte-plugin'
 " Let <template> handled by HTML
 let s:svelte_tag_start = '\v^\<(script|style)' 
 let s:svelte_tag_end = '\v^\<\/(script|style)'
+let s:svelte_template_tag = '\v^\s*\<\/?template'
 let s:empty_tagname = '(area|base|br|col|embed|hr|input|img|keygen|link|meta|param|source|track|wbr)'
 let s:empty_tag = '\v\<'.s:empty_tagname.'[^/]*\>' 
 let s:empty_tag_start = '\v\<'.s:empty_tagname.'[^\>]*$' 
@@ -32,6 +33,8 @@ let s:tag_end = '\v^\s*\/?\>\s*'
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let s:use_pug = exists("g:vim_svelte_plugin_use_pug")
+      \ && g:vim_svelte_plugin_use_pug == 1
 let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
       \ && g:vim_svelte_plugin_use_sass == 1
 let s:has_init_indent = !exists("g:vim_svelte_plugin_has_init_indent") 
@@ -56,6 +59,11 @@ runtime lib/indent/css.vim
 unlet! b:did_indent
 runtime! indent/javascript.vim
 let b:javascript_indentexpr = &indentexpr
+
+if s:use_pug
+  unlet! b:did_indent
+  runtime! indent/pug.vim
+endif
 
 if s:use_sass
   unlet! b:did_indent
@@ -126,10 +134,13 @@ function! GetSvelteIndent()
         let ind = ind - &sw
       endif
     endif
-  elseif s:SynSASS(prevsyn)
+  elseif s:SynPug(cursyn)
+    call s:Log('syntax: pug')
+    let ind = GetPugIndent()
+  elseif s:SynSASS(cursyn)
     call s:Log('syntax: sass')
     let ind = GetSassIndent()
-  elseif s:SynStyle(prevsyn)
+  elseif s:SynStyle(cursyn)
     call s:Log('syntax: style')
     let ind = GetCSSIndent()
   else
@@ -142,7 +153,8 @@ function! GetSvelteIndent()
   endif
 
   if curline =~? s:svelte_tag_start || curline =~? s:svelte_tag_end 
-        \ || prevline =~? s:svelte_tag_end
+        \|| prevline =~? s:svelte_tag_end
+        \|| (curline =~ s:svelte_template_tag && s:SynPug(cursyn))
     call s:Log('current line is svelte tag or prev line is svelte end tag')
     let ind = 0
   elseif s:has_init_indent
@@ -186,6 +198,10 @@ endfunction
 
 function! s:SynBlockEnd(syn)
   return a:syn ==? 'svelteBlockEnd'
+endfunction
+
+function! s:SynPug(syn)
+  return a:syn ==? 'pugSvelteTemplate'
 endfunction
 
 function! s:SynSASS(syn)
