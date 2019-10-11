@@ -180,33 +180,33 @@ endif
 " Redefine (less|sass)Definition to highlight <style> correctly and 
 " enable emmet-vim css type.
 if s:use_less
-  syntax clear lessDefinition
+  silent! syntax clear lessDefinition
   syntax region cssLessDefinition matchgroup=cssBraces contains=@LessSyntax 
         \ contained containedin=cssLessSvelteStyle
         \ start="{" end="}" 
 endif
 if s:use_sass
-  syntax clear sassDefinition
+  silent! syntax clear sassDefinition
   syntax region cssSassDefinition matchgroup=cssBraces contains=@SassSyntax 
         \ contained containedin=cssScssSvelteStyle,cssSassSvelteStyle
         \ start="{" end="}" 
 endif
 
 " Avoid css syntax interference
-syntax clear cssUnitDecorators
+silent! syntax clear cssUnitDecorators
 syntax match cssUnitDecorators2 
       \ /\(#\|-\|+\|%\|mm\|cm\|in\|pt\|pc\|em\|ex\|px\|ch\|rem\|vh\|vw\|vmin\|vmax\|dpi\|dppx\|dpcm\|Hz\|kHz\|s\|ms\|deg\|grad\|rad\)\ze\(;\|$\)/
       \ contained
       \ containedin=cssAttrRegion,sassCssAttribute,lessCssAttribute
 
-syntax clear cssKeyFrameProp
+silent! syntax clear cssKeyFrameProp
 syn match cssKeyFrameProp2 /\d*%\|from\|to/ 
       \ contained nextgroup=cssDefinition
       \ containedin=cssAttrRegion,sassCssAttribute,lessCssAttribute
 
 " HTML
 " Clear htmlHead that may cause highlighting out of bounds
-syntax clear htmlHead
+silent! syntax clear htmlHead
 
 " JavaScript
 " Number with minus
