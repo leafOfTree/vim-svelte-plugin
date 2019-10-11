@@ -2,7 +2,7 @@
 
 Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3]. 
 
-[![Build Status][12]](https://travis-ci.com/leafOfTree/test)
+[![Build Status][12]](https://travis-ci.com/leafOfTree/vim-svelte-plugin)
 
 ## Install
 
@@ -49,7 +49,7 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 |---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|----------------------------|
 | `g:vim_svelte_plugin_load_full_syntax`\* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0 |
 | `g:vim_svelte_plugin_use_less`              | Enable less syntax for `<style lang="less">`.                                                          | 0 |
-| `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"`).                                 | 0 |
+| `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"`).                               | 0 |
 | `g:vim_svelte_plugin_has_init_indent`       | Initially indent one tab inside `style/script` tags.                                                   | 1 |
 | `g:vim_svelte_plugin_use_foldexpr`          | Enable builtin `foldexpr` foldmethod.                                                                  | 0 |
 | `g:vim_svelte_plugin_debug`                 | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                   | 0 |
@@ -129,4 +129,4 @@ This plugin is under [The Unlicense][8]. Other than this, `lib/indent/*` files a
 [8]: https://choosealicense.com/licenses/unlicense/
 [10]: https://github.com/mattn/emmet-vim
 [11]: https://github.com/leafOfTree/vim-svelte-theme
-[12]: https://travis-ci.com/leafOfTree/test.svg?branch=vim-svelte-plugin
+[12]: https://travis-ci.com/leafOfTree/vim-svelte-plugin.svg?branch=master
