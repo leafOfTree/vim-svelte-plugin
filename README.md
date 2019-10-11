@@ -1,8 +1,6 @@
-# vim-svelte-plugin
+# vim-svelte-plugin [![Build Status][12]](https://travis-ci.com/leafOfTree/vim-svelte-plugin)
 
 Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3]. 
-
-[![Build Status][12]](https://travis-ci.com/leafOfTree/vim-svelte-plugin)
 
 ## Install
 
