@@ -20,7 +20,7 @@ let s:name = 'vim-svelte-plugin'
 " Let <template> handled by HTML
 let s:svelte_tag_start = '\v^\<(script|style)' 
 let s:svelte_tag_end = '\v^\<\/(script|style)'
-let s:svelte_template_tag = '\v^\s*\<\/?template'
+let s:template_tag = '\v^\s*\<\/?template'
 let s:empty_tagname = '(area|base|br|col|embed|hr|input|img|keygen|link|meta|param|source|track|wbr)'
 let s:empty_tag = '\v\<'.s:empty_tagname.'[^/]*\>' 
 let s:empty_tag_start = '\v\<'.s:empty_tagname.'[^\>]*$' 
@@ -105,7 +105,7 @@ function! GetSvelteIndent()
     call s:Log('syntax: html')
     let ind = XmlIndentGet(v:lnum, 0)
     if prevline =~? s:empty_tag
-      call s:Log('prev line is empty tag')
+      call s:Log('previous line is empty tag')
       let ind = ind - &sw
     endif
 
@@ -130,7 +130,7 @@ function! GetSvelteIndent()
       "Decrease indent if prevlines are a multiline empty tag
       let [start, end] = s:PrevMultilineEmptyTag(v:lnum)
       if end == prevlnum
-        call s:Log('prev line is a multiline empty tag')
+        call s:Log('previous line is a multiline empty tag')
         let ind = ind - &sw
       endif
     endif
@@ -154,8 +154,9 @@ function! GetSvelteIndent()
 
   if curline =~? s:svelte_tag_start || curline =~? s:svelte_tag_end 
         \|| prevline =~? s:svelte_tag_end
-        \|| (curline =~ s:svelte_template_tag && s:SynPug(cursyn))
-    call s:Log('current line is svelte tag or prev line is svelte end tag')
+        \|| (curline =~ s:template_tag && s:SynPug(cursyn))
+    call s:Log('current line is svelte tag or previous line is svelte tag end')
+    call s:Log('... or current line is pug template tag')
     let ind = 0
   elseif s:has_init_indent
     call s:Log('has init indent')
@@ -164,7 +165,7 @@ function! GetSvelteIndent()
       let ind = &sw
     endif
   elseif prevline =~? s:svelte_tag_start
-    call s:Log('prev line is svelte tag')
+    call s:Log('previous line is svelte tag start')
     let ind = 0
   endif
 
