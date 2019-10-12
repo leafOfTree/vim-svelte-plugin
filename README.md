@@ -13,6 +13,9 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 
 ## Install
 
+<details>
+<summary><a>How to install</a></summary>
+
 - [VundleVim][2]
 
         Plugin 'leafOfTree/vim-svelte-plugin'
@@ -31,7 +34,10 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 
         set rtp+=path/to/this_plugin
 
-The plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel free to open an issue or a pull request.
+<br />
+</details>
+
+This plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel free to open an issue or a pull request.
 
 ## How it works
 
@@ -67,7 +73,7 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 
 **Note**
 
-- `filetype` is set to `svelte` so autocmds and other settings for `javascript` have to be manually enabled for `svelte`.
+- `filetype` is set to `svelte` so autocmds and other custom settings for `javascript` have to be manually enabled for `svelte`.
 
 - `g:vim_svelte_plugin_use_foldexpr` default value used to be `1`. But there are other foldmethod choices, so it's changed to `0`.
 
