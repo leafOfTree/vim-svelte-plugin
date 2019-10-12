@@ -41,7 +41,7 @@ This plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel
 
 ## How it works
 
-`vim-svelte-plugin` combines HTML, CSS and JavaScript syntax and indent in one file.
+It combines HTML, CSS and JavaScript syntax and indent in one file.
 
 Supports
 
