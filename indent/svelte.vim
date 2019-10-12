@@ -37,6 +37,8 @@ let s:use_pug = exists("g:vim_svelte_plugin_use_pug")
       \ && g:vim_svelte_plugin_use_pug == 1
 let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
       \ && g:vim_svelte_plugin_use_sass == 1
+let s:use_coffee = exists("g:vim_vue_plugin_use_coffee")
+      \ && g:vim_vue_plugin_use_coffee == 1
 let s:has_init_indent = !exists("g:vim_svelte_plugin_has_init_indent") 
       \ || g:vim_svelte_plugin_has_init_indent == 1
 let s:debug = exists("g:vim_svelte_plugin_debug")
@@ -69,6 +71,11 @@ if s:use_sass
   unlet! b:did_indent
   runtime! indent/sass.vim
 endif
+
+if s:use_coffee
+  unlet! b:did_indent
+  runtime! indent/coffee.vim
+endif
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -93,13 +100,10 @@ function! GetSvelteIndent()
   let prevlnum = prevnonblank(v:lnum-1)
   let prevline = getline(prevlnum)
   let prevsyns = s:SynsSOL(prevlnum)
-  let prevsyn = get(prevsyns, 0, '')
-  let prevsyn_second = get(prevsyns, 1, '')
 
   let curline = getline(v:lnum)
   let cursyns = s:SynsSOL(v:lnum)
   let cursyn = get(cursyns, 0, '')
-  let cursyn_second = get(cursyns, 1, '')
 
   if s:SynHTML(cursyn)
     call s:Log('syntax: html')
@@ -109,12 +113,12 @@ function! GetSvelteIndent()
       let ind = ind - &sw
     endif
 
-    if s:SynBlockBody(prevsyn_second) || s:SynBlockStart(prevsyn_second)
+    if s:IsBlockStart(prevsyns)
       call s:Log('increase block indent')
       let ind = ind + &sw
     endif
 
-    if curline !~ '^\s*$' && (s:SynBlockBody(cursyn_second) || s:SynBlockEnd(cursyn_second))
+    if s:IsBlockEnd(cursyns, curline)
       call s:Log('decrease block indent')
       let ind = ind - &sw
     endif
@@ -137,6 +141,9 @@ function! GetSvelteIndent()
   elseif s:SynPug(cursyn)
     call s:Log('syntax: pug')
     let ind = GetPugIndent()
+  elseif s:SynCoffee(cursyn)
+    call s:Log('syntax: coffee')
+    let ind = GetCoffeeIndent(v:lnum)
   elseif s:SynSASS(cursyn)
     call s:Log('syntax: sass')
     let ind = GetSassIndent()
@@ -159,7 +166,7 @@ function! GetSvelteIndent()
     call s:Log('... or current line is pug template tag')
     let ind = 0
   elseif s:has_init_indent
-    if s:SynSvelteScriptOrStyle(cursyn) && ind == 0
+    if s:SynSvelteScriptOrStyle(cursyn) && ind < 1
       call s:Log('add initial indent')
       let ind = &sw
     endif
@@ -170,6 +177,21 @@ function! GetSvelteIndent()
 
   call s:Log('indent: '.ind)
   return ind
+endfunction
+
+function! s:IsBlockStart(prevsyns)
+  let prevsyn_second = get(a:prevsyns, 1, '')
+  let prevsyn_third = get(a:prevsyns, 2, '')
+  return s:SynBlockBody(prevsyn_second) || s:SynBlockStart(prevsyn_second)
+        \ || s:SynBlockBody(prevsyn_third) || s:SynBlockStart(prevsyn_third)
+endfunction
+
+function! s:IsBlockEnd(cursyns, curline)
+  let cursyn_second = get(a:cursyns, 1, '')
+  let cursyn_third = get(a:cursyns, 2, '')
+  return a:curline !~ '^\s*$'
+        \ && (s:SynBlockBody(cursyn_second) || s:SynBlockEnd(cursyn_second)
+        \ || s:SynBlockBody(cursyn_third) || s:SynBlockEnd(cursyn_third))
 endfunction
 
 function! s:SynsEOL(lnum)
@@ -202,6 +224,10 @@ endfunction
 
 function! s:SynPug(syn)
   return a:syn ==? 'pugSvelteTemplate'
+endfunction
+
+function! s:SynCoffee(syn)
+  return a:syn ==? 'coffeeSvelteScript'
 endfunction
 
 function! s:SynSASS(syn)

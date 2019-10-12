@@ -26,6 +26,8 @@ let s:use_less = exists("g:vim_svelte_plugin_use_less")
       \ && g:vim_svelte_plugin_use_less == 1
 let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
       \ && g:vim_svelte_plugin_use_sass == 1
+let s:use_coffee = exists("g:vim_svelte_plugin_use_coffee")
+      \ && g:vim_svelte_plugin_use_coffee == 1
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -43,7 +45,6 @@ endfunction
 
 function! s:LoadDefaultSyntax(group, type)
   unlet! b:current_syntax
-
   let syntaxPaths = ['$VIMRUNTIME', '$VIM/vimfiles', '$HOME/.vim']
   for path in syntaxPaths
     let file = expand(path).'/syntax/'.a:type.'.vim'
@@ -54,8 +55,18 @@ function! s:LoadDefaultSyntax(group, type)
 endfunction
 
 function! s:LoadFullSyntax(group, type)
-  unlet! b:current_syntax
+  call s:SetCurrentSyntax(a:type)
   exec 'syntax include '.a:group.' syntax/'.a:type.'.vim'
+endfunction
+
+" Settings to avoid syntax overload
+function! s:SetCurrentSyntax(type)
+  if a:type == 'coffee'
+    syntax cluster coffeeJS contains=@htmlJavaScript
+    let b:current_syntax = 'svelte'
+  else
+    unlet! b:current_syntax
+  endif
 endfunction
 "}}}
 
@@ -101,6 +112,12 @@ endif
 if s:use_sass
   call s:LoadSyntax('@SassSyntax', 'sass')
   runtime! after/syntax/sass.vim
+endif
+
+" If CoffeeScript is enabled, load the syntax. Keep name consistent with
+" vim-coffee-script/after/html.vim
+if s:use_coffee
+  call s:LoadFullSyntax('@htmlCoffeeScript', 'coffee')
 endif
 "}}}
 
@@ -149,10 +166,10 @@ syntax region pugSvelteTemplate fold
       \ end=+</template>+
       \ keepend contains=@PugSyntax,svelteTag
 
-syntax region coffeeVueScript fold 
+syntax region coffeeSvelteScript fold 
       \ start=+<script[^>]*lang="coffee"[^>]*>+
       \ end=+</script>+
-      \ keepend contains=@htmlCoffeeScript,jsImport,jsExport,vueTag
+      \ keepend contains=@htmlCoffeeScript,jsImport,jsExport,svelteTag
 
 syntax region cssLessSvelteStyle fold
       \ start=+<style[^>]*lang="less"[^>]*>+ 
