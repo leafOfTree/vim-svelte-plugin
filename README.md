@@ -74,7 +74,7 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 **Note**
 
 - `filetype` is set to `svelte` so autocmds and other custom settings for `javascript` have to be manually enabled for `svelte`.
-- `g:vim_svelte_plugin_use_foldexpr` default value used to be `1`. But there are other foldmethod choices, so it's changed to `0`.
+- `g:vim_svelte_plugin_use_foldexpr` default value used to be `1`, but it's changed to `0` now.
 - `g:vim_svelte_plugin_load_full_syntax` applies to `JavaScript/HTML/CSS/SASS/LESS`.
 
 - See <https://svelte.dev/docs#svelte_preprocess> for how to use less/sass/pug... in svelte.
