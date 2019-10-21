@@ -267,13 +267,13 @@ endfunction
 function! GetSvelteTag()
   let lnum = getcurpos()[1]
   let cursyns = s:SynsSOL(lnum)
-  let first_syn = get(cursyns, 0, '')
+  let syn = get(cursyns, 0, '')
 
-  if first_syn =~ '.*SvelteTemplate'
+  if syn =~ 'SvelteTemplate'
     let tag = 'template'
-  elseif first_syn =~ '.*SvelteScript'
+  elseif syn =~ 'SvelteScript'
     let tag = 'script'
-  elseif first_syn =~ '.*SvelteStyle'
+  elseif syn =~ 'SvelteStyle'
     let tag = 'style'
   else
     let tag = ''
