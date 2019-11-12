@@ -12,11 +12,13 @@ let s:highlight_svelte_attr = exists("g:vim_svelte_plugin_highlight_svelte_attr"
 " Syntax highlight {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax match svelteComponentName containedin=htmlTagN '\v\C<[A-Z][a-zA-Z0-9]+(\.[A-Z][a-zA-Z0-9]+)*>'
+syntax match svelteComponentName containedin=htmlTagN '\v\C<[a-zA-Z0-9]+(\.[A-Z][a-zA-Z0-9]+)*>'
 
 syntax match svelteComponentName containedin=htmlTagN '\v\C<[a-z0-9]+(-[a-z0-9]+)+>'
 
 syntax match svelteComponentName containedin=htmlTagN '\vsvelte:\w*'
+
+syntax match svelteComponentName containedin=htmlTagN 'page'
 
 " Syntax for vim-svelte-theme
 syntax match htmlAttr '\v(\S|\<)@<![^\/\<\>[:blank:]]+' containedin=htmlTag
