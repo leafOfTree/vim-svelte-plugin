@@ -75,7 +75,8 @@ endfunction
 " Load main syntax {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Load syntax/*.vim to syntax group
+" Load syntax/html.vim to syntax group, which loads full JavaScript and CSS
+" syntax. It defines group htmlJavaScript and htmlCss.
 call s:LoadSyntax('@HTMLSyntax', 'html')
 
 " Load svelte-html syntax
