@@ -46,7 +46,7 @@ It combines HTML, CSS and JavaScript syntax and indent in one file.
 Supports
 
 - Svelte directives.
-- Less/Sass/Scss, Pug with [vim-pug][4], Coffee with [vim-coffee-script][6].^
+- Less/Sass/Scss, Pug with [vim-pug][4], Coffee with [vim-coffee-script][6], TypeScript with [typescript-vim][14] or [yats.vim][15].^
 - A builtin `foldexpr` foldmehthod.^
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
 
@@ -63,6 +63,7 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 | `g:vim_svelte_plugin_load_full_syntax`\* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0 |
 | `g:vim_svelte_plugin_use_pug`\*             | Enable pug syntax for `<template lang="pug">`.                                                         | 0 |
 | `g:vim_svelte_plugin_use_coffee`            | Enable coffee syntax for `<script lang="coffee">`.                                                     | 0 |
+| `g:vim_svelte_plugin_use_typescript`        | Enable typescript syntax for `<script lang="ts">`.                                                     | 0 |
 | `g:vim_svelte_plugin_use_less`              | Enable less syntax for `<style lang="less">`.                                                          | 0 |
 | `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"`).                               | 0 |
 | `g:vim_svelte_plugin_has_init_indent`       | Initially indent one tab inside `style/script` tags.                                                   | 1 |
@@ -139,3 +140,5 @@ This plugin is under [The Unlicense][8]. Other than this, `lib/indent/*` files a
 [10]: https://github.com/mattn/emmet-vim
 [11]: https://github.com/leafOfTree/vim-svelte-theme
 [12]: https://travis-ci.com/leafOfTree/vim-svelte-plugin.svg?branch=master
+[14]: https://github.com/leafgarland/typescript-vim
+[15]: https://github.com/HerringtonDarkholme/yats.vim
