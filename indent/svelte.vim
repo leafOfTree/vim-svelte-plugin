@@ -39,6 +39,8 @@ let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
       \ && g:vim_svelte_plugin_use_sass == 1
 let s:use_coffee = exists("g:vim_svelte_plugin_use_coffee")
       \ && g:vim_svelte_plugin_use_coffee == 1
+let s:use_typescript = exists("g:vim_svelte_plugin_use_typescript")
+      \ && g:vim_svelte_plugin_use_typescript == 1
 let s:has_init_indent = !exists("g:vim_svelte_plugin_has_init_indent") 
       \ || g:vim_svelte_plugin_has_init_indent == 1
 let s:debug = exists("g:vim_svelte_plugin_debug")
@@ -75,6 +77,11 @@ endif
 if s:use_coffee
   unlet! b:did_indent
   runtime! indent/coffee.vim
+endif
+
+if s:use_typescript
+  unlet! b:did_indent
+  runtime! indent/typescript.vim
 endif
 "}}}
 
@@ -144,6 +151,9 @@ function! GetSvelteIndent()
   elseif s:SynCoffee(cursyn)
     call s:Log('syntax: coffee')
     let ind = GetCoffeeIndent(v:lnum)
+  elseif s:SynTypeScript(cursyn)
+    call s:Log('syntax: typescript')
+    let ind = GetTypescriptIndent()
   elseif s:SynSASS(cursyn)
     call s:Log('syntax: sass')
     let ind = GetSassIndent()
@@ -228,6 +238,10 @@ endfunction
 
 function! s:SynCoffee(syn)
   return a:syn ==? 'coffeeSvelteScript'
+endfunction
+
+function! s:SynTypeScript(syn)
+  return a:syn ==? 'typescriptSvelteScript'
 endfunction
 
 function! s:SynSASS(syn)
