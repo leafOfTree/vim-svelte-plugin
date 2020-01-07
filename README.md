@@ -13,9 +13,9 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 
 ## Installation
 
-&nbsp; <details>
+<details>
 
-&nbsp; <summary><a>How to install</a></summary>
+<summary><a>How to install</a></summary>
 
 - [VundleVim][2]
 
