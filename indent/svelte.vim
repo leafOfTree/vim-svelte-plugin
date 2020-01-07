@@ -37,8 +37,8 @@ let s:use_pug = exists("g:vim_svelte_plugin_use_pug")
       \ && g:vim_svelte_plugin_use_pug == 1
 let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
       \ && g:vim_svelte_plugin_use_sass == 1
-let s:use_coffee = exists("g:vim_vue_plugin_use_coffee")
-      \ && g:vim_vue_plugin_use_coffee == 1
+let s:use_coffee = exists("g:vim_svelte_plugin_use_coffee")
+      \ && g:vim_svelte_plugin_use_coffee == 1
 let s:has_init_indent = !exists("g:vim_svelte_plugin_has_init_indent") 
       \ || g:vim_svelte_plugin_has_init_indent == 1
 let s:debug = exists("g:vim_svelte_plugin_debug")
