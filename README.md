@@ -2,10 +2,10 @@
 
 <p align="center">
 <a href="https://github.com/altercation/vim-colors-solarized">
-<img alt="screenshot" src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-solarized.png" width="200" />
+<img alt="screenshot" src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-solarized.png" width="220" />
 </a>
 <a href="https://github.com/leafOfTree/vim-svelte-theme">
-<img alt="screenshot" src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-theme.png" width="200" />
+<img alt="screenshot" src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-theme.png" width="220" />
 </a>
 </p>
 
