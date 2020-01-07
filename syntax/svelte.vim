@@ -28,6 +28,8 @@ let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
       \ && g:vim_svelte_plugin_use_sass == 1
 let s:use_coffee = exists("g:vim_svelte_plugin_use_coffee")
       \ && g:vim_svelte_plugin_use_coffee == 1
+let s:use_typescript = exists("g:vim_svelte_plugin_use_typescript")
+      \ && g:vim_svelte_plugin_use_typescript == 1
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -63,6 +65,8 @@ endfunction
 function! s:SetCurrentSyntax(type)
   if a:type == 'coffee'
     syntax cluster coffeeJS contains=@htmlJavaScript
+
+    " Avoid overload of `javascript.vim`
     let b:current_syntax = 'svelte'
   else
     unlet! b:current_syntax
@@ -120,6 +124,11 @@ endif
 if s:use_coffee
   call s:LoadFullSyntax('@htmlCoffeeScript', 'coffee')
 endif
+
+" If TypeScript is enabled, load the syntax.
+if s:use_typescript
+  call s:LoadFullSyntax('@TypeScript', 'typescript')
+endif
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -171,6 +180,11 @@ syntax region coffeeSvelteScript fold
       \ start=+<script[^>]*lang="coffee"[^>]*>+
       \ end=+</script>+
       \ keepend contains=@htmlCoffeeScript,jsImport,jsExport,svelteTag
+
+syntax region typescriptSvelteScript fold
+      \ start=+<script[^>]*lang="ts"[^>]*>+
+      \ end=+</script>+
+      \ keepend contains=@TypeScript,svelteTag
 
 syntax region cssLessSvelteStyle fold
       \ start=+<style[^>]*lang="less"[^>]*>+ 
