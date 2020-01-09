@@ -142,7 +142,7 @@ function! GetSvelteIndent()
       let [start, end] = s:PrevMultilineEmptyTag(v:lnum)
       if end == prevlnum
         call s:Log('previous line is a multiline empty tag')
-        let ind = ind - &sw
+        let ind = indent(v:lnum - 1)
       endif
     endif
   elseif s:SynPug(cursyn)
@@ -257,17 +257,23 @@ function! s:SynSvelteScriptOrStyle(syn)
 endfunction
 
 function! s:PrevMultilineEmptyTag(lnum)
-  let lnum = a:lnum
+  let lnum = a:lnum - 1
   let lnums = [0, 0]
   while lnum > 0
     let line = getline(lnum)
     if line =~? s:empty_tag_end
       let lnums[1] = lnum
     endif
-    if line =~? s:empty_tag_start
-      let lnums[0] = lnum
-      return lnums
+
+    if line =~? s:tag_start
+      if line =~? s:empty_tag_start
+        let lnums[0] = lnum
+        return lnums
+      else
+        return [0, 0]
+      endif
     endif
+
     let lnum = lnum - 1
   endwhile
 endfunction
