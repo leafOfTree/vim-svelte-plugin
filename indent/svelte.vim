@@ -193,6 +193,7 @@ endfunction
 
 function! s:IsBlockStart(prevsyns)
   let prevsyn_second = get(a:prevsyns, 1, '')
+  " Some HTML tags add an extra syntax layer
   let prevsyn_third = get(a:prevsyns, 2, '')
   return s:SynBlockBody(prevsyn_second) || s:SynBlockStart(prevsyn_second)
         \ || s:SynBlockBody(prevsyn_third) || s:SynBlockStart(prevsyn_third)
@@ -200,6 +201,7 @@ endfunction
 
 function! s:IsBlockEnd(cursyns, curline)
   let cursyn_second = get(a:cursyns, 1, '')
+  " Some HTML tags add an extra syntax layer
   let cursyn_third = get(a:cursyns, 2, '')
   return a:curline !~ '^\s*$'
         \ && (s:SynBlockBody(cursyn_second) || s:SynBlockEnd(cursyn_second)
