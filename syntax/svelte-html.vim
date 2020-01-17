@@ -26,11 +26,11 @@ syntax match htmlAttr '\v(\S|\<)@<![^\/\<\>[:blank:]]+' containedin=htmlTag
 syntax match htmlAttrEqual '\v\=' containedin=htmlAttr
 
 syntax match svelteAttr 
-      \ '\v(\S)@<!(on|bind|use|in|out|transition):[^\=\>[:blank:]]+(\=\"[^"]*\"|\=\{[^}]*\})?'
+      \ '\v(\S)@<!(on|bind|use|in|out|transition|animate|class):[^\=\>[:blank:]]+(\=\"[^"]*\"|\=\{[^}]*\})?'
       \ containedin=htmlTag 
       \ contains=svelteKey,svelteValue
 
-syntax match svelteKey contained '\v(on|bind|use|in|out|transition):[^\=\>[:blank:]]+'
+syntax match svelteKey contained '\v(on|bind|use|in|out|transition|animate|class):[^\=\>[:blank:]]+'
 syntax match svelteValue contained '\v\{[^}]*\}'
 
 syntax region svelteExpression 
