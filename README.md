@@ -51,7 +51,7 @@ Supports
 - A builtin `foldexpr` foldmehthod.^
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
 
-^: see Configuration for details. Relative plugins need to be downloaded.
+^: see Configuration for details. Relative plugins need to be installed.
 
 ## Configuration
 
