@@ -38,7 +38,7 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 <br />
 </details>
 
-This plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel free to open an issue or a pull request.
+This plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel free to open an issue or pull request.
 
 ## How it works
 
