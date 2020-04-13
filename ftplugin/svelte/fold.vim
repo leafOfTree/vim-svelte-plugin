@@ -81,7 +81,27 @@ function! GetSvelteFold(lnum)
     return '>'.next_indent
   endif
 
-  return this_indent
+  if GetSvelteTag(a:lnum) == 'script'
+    " Handle closing '}'
+    if this_line =~ '^\s*}\s*$'
+      return '<'.prev_indent
+    endif
+
+    " --this
+    " ----next
+    if this_indent < next_indent
+      return '>'.next_indent
+    endif
+
+    " ----this
+    " --next
+    if this_indent >= next_indent 
+      return this_indent
+    endif
+  else
+    " Template or style
+    return this_indent
+  endif
 endfunction
 
 function! s:IndentLevel(lnum)
