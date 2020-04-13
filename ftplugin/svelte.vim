@@ -19,3 +19,21 @@ endif
 " indentexpr
 let b:syng_str = '^\%(.*template\)\@!.*string\|special'
 let b:syng_strcom = '^\%(.*template\)\@!.*string\|comment\|regex\|special\|doc'
+
+function! GetSvelteTag()
+  let lnum = getcurpos()[1]
+  let cursyns = s:SynsSOL(lnum)
+  let syn = get(cursyns, 0, '')
+
+  if syn =~ 'SvelteTemplate'
+    let tag = 'template'
+  elseif syn =~ 'SvelteScript'
+    let tag = 'script'
+  elseif syn =~ 'SvelteStyle'
+    let tag = 'style'
+  else
+    let tag = ''
+  endif
+
+  return tag
+endfunction

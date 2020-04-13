@@ -25,8 +25,8 @@ setlocal foldexpr=GetSvelteFold(v:lnum)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:empty_line = '\v^\s*$'
 let s:block_end = '\v^\s*}|]|\)'
-let s:svelte_tag_start = '\v^\<(script|style|\w+)' 
-let s:svelte_tag_end = '\v^\<\/(script|style)' 
+let s:svelte_tag_start = '\v^\<\w+' 
+let s:svelte_tag_end = '\v^\<\/\w+' 
 let s:svelte_internal_blocks = '\v:(else|then|catch)'
 "}}}
 
@@ -52,9 +52,6 @@ let s:svelte_internal_blocks = '\v:(else|then|catch)'
 function! GetSvelteFold(lnum)
   let this_line = getline(a:lnum)
   let next_line = getline(a:lnum + 1)
-  if a:lnum > 1
-    let prev_line = getline(a:lnum - 1)
-  endif
 
   " Handle empty lines
   if this_line =~ s:empty_line
@@ -79,27 +76,12 @@ function! GetSvelteFold(lnum)
   let this_indent = s:IndentLevel(a:lnum)
   let next_indent = s:IndentLevel(s:NextNonBlankLine(a:lnum))
 
+  " Fold separately on blocks
   if this_line =~ s:svelte_internal_blocks
     return '>'.next_indent
   endif
 
-  " ----prev
-  " --this
-  if this_indent < prev_indent
-    return prev_indent
-  endif
-
-  " ----this
-  " --next
-  if this_indent >= next_indent 
-    return this_indent
-  endif
-
-  " --this
-  " ----next
-  if this_indent < next_indent
-    return '>'.next_indent
-  endif
+  return this_indent
 endfunction
 
 function! s:IndentLevel(lnum)
