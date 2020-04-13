@@ -83,7 +83,7 @@ function! GetSvelteFold(lnum)
 
   if GetSvelteTag(a:lnum) == 'script'
     " Handle closing '}'
-    if this_line =~ '^\s*}\s*$'
+    if this_line =~ '\v^\s*},?\s*$'
       return '<'.prev_indent
     endif
 
