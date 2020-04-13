@@ -27,6 +27,7 @@ let s:empty_line = '\v^\s*$'
 let s:block_end = '\v^\s*}|]|\)'
 let s:svelte_tag_start = '\v^\<(script|style|\w+)' 
 let s:svelte_tag_end = '\v^\<\/(script|style)' 
+let s:svelte_internal_blocks = '\v:(else|then|catch)'
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -45,6 +46,7 @@ let s:svelte_tag_end = '\v^\<\/(script|style)'
 "  "a1", "a2", ..	add one, two, .. to the fold level of the previous
 "			            line, use the result for the current line
 "  "s1", "s2", ..	subtract one, two, .. from the fold level of the
+"                 previous line, use the result for the next line
 "  ">1", ">2", ..	a fold with this level starts at this line
 "  "<1", "<2", ..	a fold with this level ends at this line
 function! GetSvelteFold(lnum)
@@ -69,21 +71,32 @@ function! GetSvelteFold(lnum)
   endif
 
   " Fold by indent
+  if a:lnum > 1
+    let prev_indent = s:IndentLevel(a:lnum - 1)
+  else
+    let prev_indent = 0
+  endif
   let this_indent = s:IndentLevel(a:lnum)
   let next_indent = s:IndentLevel(s:NextNonBlankLine(a:lnum))
 
-  if a:lnum > 1
-    let prev_indent = s:IndentLevel(a:lnum - 1)
-
-    if this_indent < prev_indent
-      return prev_indent
-    endif
+  if this_line =~ s:svelte_internal_blocks
+    return '>'.next_indent
   endif
 
+  " ----prev
+  " --this
+  if this_indent < prev_indent
+    return prev_indent
+  endif
+
+  " ----this
+  " --next
   if this_indent >= next_indent 
     return this_indent
   endif
 
+  " --this
+  " ----next
   if this_indent < next_indent
     return '>'.next_indent
   endif
