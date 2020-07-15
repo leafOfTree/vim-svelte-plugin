@@ -1,3 +1,4 @@
 theme: jekyll-theme-hacker
 markdown: CommonMarkGhPages
-extensions: ["table"]
+commonmark: 
+  extensions: ["table"]
