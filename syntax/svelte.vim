@@ -232,13 +232,15 @@ endif
 " enable emmet-vim css type.
 if s:use_less
   silent! syntax clear lessDefinition
-  syntax region cssLessDefinition matchgroup=cssBraces contains=@LessSyntax 
+  syntax region cssLessDefinition matchgroup=cssBraces 
+        \ contains=@LessSyntax,cssLessDefinition
         \ contained containedin=cssLessSvelteStyle
         \ start="{" end="}" 
 endif
 if s:use_sass
   silent! syntax clear sassDefinition
-  syntax region cssSassDefinition matchgroup=cssBraces contains=@SassSyntax 
+  syntax region cssSassDefinition matchgroup=cssBraces 
+        \ contains=@SassSyntax,cssSassDefinition
         \ contained containedin=cssScssSvelteStyle,cssSassSvelteStyle
         \ start="{" end="}" 
 endif
