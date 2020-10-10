@@ -87,12 +87,12 @@ call s:LoadSyntax('@HTMLSyntax', 'html')
 syntax include syntax/svelte-html.vim
 
 " Avoid overload
-if hlexists('cssTagName') == 0
+if !hlexists('cssTagName')
   call s:LoadSyntax('@htmlCss', 'css')
 endif
 
 " Avoid overload
-if hlexists('javaScriptComment') == 0
+if !hlexists('javaScriptComment')
   call s:LoadSyntax('@htmlJavaScript', 'javascript')
 endif
 "}}}
