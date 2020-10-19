@@ -149,6 +149,11 @@ syntax match htmlSvelteTemplate fold
 syntax match htmlSvelteTemplate fold
       \ +<[-:a-zA-Z0-9]\+[^>]*/>+ 
       \ contains=@HTMLSyntax
+" Empty tag across multiple lines
+syntax region htmlSvelteTemplate fold
+      \ start=+^<[-:a-zA-Z0-9]\+[^>]*$+
+      \ end=+/>+
+      \ keepend contains=@HTMLSyntax
 " @html,@debug tag in one line
 syntax match htmlSvelteTemplate fold
       \ +{@\(html\|debug\)[^}]*}+ 
