@@ -137,9 +137,20 @@ endif
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " All start with html/javascript/css for emmet-vim in-file type detection
+" Normal tag template
 syntax region htmlSvelteTemplate fold
-      \ start=+<[-:a-zA-Z0-9]\+[^>]*>+ 
+      \ start=+<[-:a-zA-Z0-9]\+[^>]*>$+ 
       \ end=+^</[-:a-zA-Z0-9]\+>+ 
+      \ keepend contains=@HTMLSyntax
+" Start tag across multiple lines
+syntax region htmlSvelteTemplate1 fold
+      \ start=+<[-:a-zA-Z0-9]\+[^>]*$+ 
+      \ end=+^</[-:a-zA-Z0-9]\+>+ 
+      \ keepend contains=@HTMLSyntax
+" Empty tag across multiple lines
+syntax region htmlSvelteTemplate fold
+      \ start=+<[-:a-zA-Z0-9]\+[^>]*$+
+      \ end=+^[^<]*/>+
       \ keepend contains=@HTMLSyntax
 " Tag in one line
 syntax match htmlSvelteTemplate fold
@@ -149,11 +160,6 @@ syntax match htmlSvelteTemplate fold
 syntax match htmlSvelteTemplate fold
       \ +<[-:a-zA-Z0-9]\+[^>]*/>+ 
       \ contains=@HTMLSyntax
-" Empty tag across multiple lines
-syntax region htmlSvelteTemplate fold
-      \ start=+^<[-:a-zA-Z0-9]\+[^>]*$+
-      \ end=+/>+
-      \ keepend contains=@HTMLSyntax
 " @html,@debug tag in one line
 syntax match htmlSvelteTemplate fold
       \ +{@\(html\|debug\)[^}]*}+ 
