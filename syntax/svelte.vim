@@ -142,15 +142,10 @@ syntax region htmlSvelteTemplate fold
       \ start=+<[-:a-zA-Z0-9]\+[^>]*>$+ 
       \ end=+^</[-:a-zA-Z0-9]\+>+ 
       \ keepend contains=@HTMLSyntax
-" Start tag across multiple lines
-syntax region htmlSvelteTemplate1 fold
-      \ start=+<[-:a-zA-Z0-9]\+[^>]*$+ 
-      \ end=+^</[-:a-zA-Z0-9]\+>+ 
-      \ keepend contains=@HTMLSyntax
-" Empty tag across multiple lines
+" Start tag across multiple lines or Empty tag across multiple lines
 syntax region htmlSvelteTemplate fold
-      \ start=+<[-:a-zA-Z0-9]\+[^>]*$+
-      \ end=+^[^<]*/>+
+      \ start=+<[-:a-zA-Z0-9]\+[^>]*$+ 
+      \ end=+^\(<\/[-:a-zA-Z0-9]\+>\)\|^\([^<]*\/>\)+ 
       \ keepend contains=@HTMLSyntax
 " Tag in one line
 syntax match htmlSvelteTemplate fold
