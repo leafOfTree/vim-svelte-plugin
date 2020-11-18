@@ -81,24 +81,38 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 
 ## Context based behavior
 
-As there are more than one language in `.svelte` file, the different behaviors like mapping or completion may be expected under different tags.
+As there are more than one language in `.svelte` file, the different behaviors like mapping, completion, and local options may be expected according to tags or subtypes(current language type).
 
-This plugin provides a function to get the tag where the cursor is in.
+This plugin provides functions to get the tag/subtype where the cursor is in.
 
 - `GetSvelteTag() => String` Return value is 'template', 'script' or 'style'.
 
-### Example
+  ```vim
+  " Example
+  autocmd FileType svelte inoremap <buffer><expr> : InsertColon()
+
+  function! InsertColon()
+    let tag = GetSvelteTag()
+    return tag == 'template' ? ':' : ': '
+  endfunction
+  ```
+
+- `GetSvelteSubtype() => String` Return value is one of `'html', 'javascript', 'css', 'scss', ...`
+
+You can also define an event listener function `OnChangeSvelteSubtype(subtype)` in your `vimrc` to get the subtype and set its local options whenever it changes.
 
 ```vim
-autocmd FileType svelte inoremap <buffer><expr> : InsertColon()
-
-function! InsertColon()
-  let tag = GetSvelteTag()
-  
-  if tag == 'template'
-    return ':'
+" Set local options based on subtype
+function! OnChangeSvelteSubtype(subtype)
+  echom 'Subtype is '.a:subtype
+  if a:subtype == 'html'
+    setlocal commentstring=<!--%s-->
+    setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
+  elseif a:subtype =~ 'css'
+    setlocal comments=s1:/*,mb:*,ex:*/ commentstring&
   else
-    return ': '
+    setlocal commentstring=//%s
+    setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
   endif
 endfunction
 ```
