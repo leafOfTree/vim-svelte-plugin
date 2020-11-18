@@ -85,7 +85,7 @@ As there are more than one language in `.svelte` file, the different behaviors l
 
 This plugin provides functions to get the tag/subtype where the cursor is in.
 
-- `GetSvelteTag() => String` Return value is 'template', 'script' or 'style'.
+- `GetSvelteTag() => String` Return value is one of `'template', 'script', 'style'`.
 
   ```vim
   " Example
@@ -97,12 +97,12 @@ This plugin provides functions to get the tag/subtype where the cursor is in.
   endfunction
   ```
 
-- `GetSvelteSubtype() => String` Return value is one of `'html', 'javascript', 'css', 'scss', ...`
+- `GetSvelteSubtype() => String` Return value is one of `'html', 'javascript', 'css', 'scss', ...`.
 
 You can also define an event listener function `OnChangeSvelteSubtype(subtype)` in your `vimrc` to get the subtype and set its local options whenever it changes.
 
 ```vim
-" Set local options based on subtype
+" Example: set local options based on subtype
 function! OnChangeSvelteSubtype(subtype)
   echom 'Subtype is '.a:subtype
   if a:subtype == 'html'
