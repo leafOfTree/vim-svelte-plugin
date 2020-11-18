@@ -105,7 +105,7 @@ You can also define an event listener function `OnChangeSvelteSubtype(subtype)` 
 " Example: set local options based on subtype
 function! OnChangeSvelteSubtype(subtype)
   echom 'Subtype is '.a:subtype
-  if a:subtype == 'html'
+  if empty(a:subtype) || a:subtype == 'html'
     setlocal commentstring=<!--%s-->
     setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
   elseif a:subtype =~ 'css'
