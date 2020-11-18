@@ -3,8 +3,7 @@
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:highlight_svelte_attr = exists("g:vim_svelte_plugin_highlight_svelte_attr")
-      \ && g:vim_svelte_plugin_highlight_svelte_attr == 1
+let s:highlight_svelte_attr = svelte#GetConfig('highlight_svelte_attr', 0)
 ")}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

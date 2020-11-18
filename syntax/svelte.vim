@@ -18,18 +18,12 @@ let b:current_loading_main_syntax = 'svelte'
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:load_full_syntax = exists("g:vim_svelte_plugin_load_full_syntax")
-      \ && g:vim_svelte_plugin_load_full_syntax == 1
-let s:use_pug = exists("g:vim_svelte_plugin_use_pug")
-      \ && g:vim_svelte_plugin_use_pug == 1
-let s:use_less = exists("g:vim_svelte_plugin_use_less")
-      \ && g:vim_svelte_plugin_use_less == 1
-let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
-      \ && g:vim_svelte_plugin_use_sass == 1
-let s:use_coffee = exists("g:vim_svelte_plugin_use_coffee")
-      \ && g:vim_svelte_plugin_use_coffee == 1
-let s:use_typescript = exists("g:vim_svelte_plugin_use_typescript")
-      \ && g:vim_svelte_plugin_use_typescript == 1
+let s:load_full_syntax = svelte#GetConfig('load_full_syntax', 0)
+let s:use_pug = svelte#GetConfig('use_pug', 0)
+let s:use_less = svelte#GetConfig('use_less', 0)
+let s:use_sass = svelte#GetConfig('use_sass', 0)
+let s:use_coffee = svelte#GetConfig('use_coffee', 0)
+let s:use_typescript = svelte#GetConfig('use_typescript', 0)
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

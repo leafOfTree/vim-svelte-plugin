@@ -33,18 +33,12 @@ let s:tag_end = '\v^\s*\/?\>\s*'
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:use_pug = exists("g:vim_svelte_plugin_use_pug")
-      \ && g:vim_svelte_plugin_use_pug == 1
-let s:use_sass = exists("g:vim_svelte_plugin_use_sass")
-      \ && g:vim_svelte_plugin_use_sass == 1
-let s:use_coffee = exists("g:vim_svelte_plugin_use_coffee")
-      \ && g:vim_svelte_plugin_use_coffee == 1
-let s:use_typescript = exists("g:vim_svelte_plugin_use_typescript")
-      \ && g:vim_svelte_plugin_use_typescript == 1
-let s:has_init_indent = !exists("g:vim_svelte_plugin_has_init_indent") 
-      \ || g:vim_svelte_plugin_has_init_indent == 1
-let s:debug = exists("g:vim_svelte_plugin_debug")
-      \ && g:vim_svelte_plugin_debug == 1
+let s:use_pug = svelte#GetConfig('use_pug', 0)
+let s:use_sass = svelte#GetConfig('use_sass', 0)
+let s:use_coffee = svelte#GetConfig('use_coffee', 0)
+let s:use_typescript = svelte#GetConfig('use_typescript', 0)
+let s:has_init_indent = svelte#GetConfig('has_init_indent', 1)
+let s:debug = svelte#GetConfig('debug', 0)
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -286,28 +280,6 @@ function! s:Log(msg)
   if s:debug
     echom '['.s:name.']['.v:lnum.'] '.a:msg
   endif
-endfunction
-
-function! GetSvelteTag(...)
-  if a:0 > 0
-    let lnum = a:1 
-  else
-    let lnum = getcurpos()[1]
-  endif
-  let cursyns = s:SynsSOL(lnum)
-  let syn = get(cursyns, 0, '')
-
-  if syn =~ 'SvelteTemplate'
-    let tag = 'template'
-  elseif syn =~ 'SvelteScript'
-    let tag = 'script'
-  elseif syn =~ 'SvelteStyle'
-    let tag = 'style'
-  else
-    let tag = ''
-  endif
-
-  return tag
 endfunction
 "}}}
 
