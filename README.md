@@ -48,10 +48,13 @@ Supports
 
 - Svelte directives.
 - Less/Sass/Scss, Pug with [vim-pug][4], Coffee with [vim-coffee-script][6], TypeScript with [typescript-vim][14] or [yats.vim][15].^
+
+    Relative plugins need to be installed.
+
 - A builtin `foldexpr` foldmethod.^
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
 
-^: see Configuration for details. Relative plugins need to be installed.
+^: see Configuration for details.
 
 ## Configuration
 
