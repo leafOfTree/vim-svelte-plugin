@@ -38,7 +38,7 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 <br />
 </details>
 
-This plugin works if `filetype` is set to `svelte`. Please stay up to date. Feel free to open an issue or pull request.
+This plugin works if it has set `filetype` to `svelte`. Please stay up to date. Feel free to open an issue or pull request.
 
 ## How it works
 
@@ -102,22 +102,24 @@ This plugin provides functions to get the tag/subtype where the cursor is in.
 
 - `GetSvelteSubtype() => String` Return value is one of `'html', 'javascript', 'css', 'scss', ...`.
 
-You can also define an event listener function `OnChangeSvelteSubtype(subtype)` in your `vimrc` to get the subtype and set its local options whenever it changes.
+- `OnChangeSvelteSubtype(subtype)` An event listener that is called when subtype changes.
 
-```vim
-" Example: set local options based on subtype
-function! OnChangeSvelteSubtype(subtype)
-  echom 'Subtype is '.a:subtype
-  if empty(a:subtype) || a:subtype == 'html'
-    setlocal commentstring=<!--%s-->
-    setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
-  elseif a:subtype =~ 'css'
-    setlocal comments=s1:/*,mb:*,ex:*/ commentstring&
-  else
-    setlocal commentstring=//%s
-    setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-  endif
-endfunction
+    You can also define an event listener function `OnChangeSvelteSubtype(subtype)` in your `vimrc` to get the subtype and set its local options whenever it changes.
+
+    ```vim
+    " Example: set local options based on subtype
+    function! OnChangeSvelteSubtype(subtype)
+      echom 'Subtype is '.a:subtype
+      if empty(a:subtype) || a:subtype == 'html'
+        setlocal commentstring=<!--%s-->
+        setlocal comments=s:<!--,m:\ \ \ \ ,e:-->
+      elseif a:subtype =~ 'css'
+        setlocal comments=s1:/*,mb:*,ex:*/ commentstring&
+      else
+        setlocal commentstring=//%s
+        setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+      endif
+    endfunction
 ```
 
 ### emmet-vim
