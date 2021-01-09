@@ -86,7 +86,8 @@ endif
 " Settings {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-setlocal sw=2 ts=2
+let &l:shiftwidth=&g:shiftwidth
+let &l:tabstop=&g:tabstop
 " JavaScript indentkeys
 setlocal indentkeys=0{,0},0),0],0\,,!^F,o,O,e,:,=:else
 " XML indentkeys
