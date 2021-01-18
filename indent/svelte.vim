@@ -46,6 +46,9 @@ let s:debug = svelte#GetConfig('debug', 0)
 " Load indent method {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Save shiftwidth
+let s:sw = &sw
+
 " Use lib/indent/ files for compatibility
 unlet! b:did_indent
 runtime lib/indent/xml.vim
@@ -79,6 +82,9 @@ if s:use_typescript
   unlet! b:did_indent
   runtime! indent/typescript.vim
 endif
+
+" Recover shiftwidth
+let &sw = s:sw
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -86,7 +92,6 @@ endif
 " Settings {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let &l:shiftwidth=&g:shiftwidth
 " JavaScript indentkeys
 setlocal indentkeys=0{,0},0),0],0\,,!^F,o,O,e,:,=:else
 " XML indentkeys
