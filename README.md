@@ -120,7 +120,7 @@ This plugin provides functions to get the tag/subtype where the cursor is in.
         setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
       endif
     endfunction
-```
+    ```
 
 ### emmet-vim
 
