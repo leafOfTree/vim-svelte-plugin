@@ -182,7 +182,7 @@ syntax region coffeeSvelteScript fold
       \ keepend contains=@htmlCoffeeScript,jsImport,jsExport,svelteTag
 
 syntax region typescriptSvelteScript fold
-      \ start=+<script[^>]*lang="ts"[^>]*>+
+      \ start=+<script[^>]*lang="\(ts\|typescript\)"[^>]*>+
       \ end=+</script>+
       \ keepend contains=@TypeScript,svelteTag
 
