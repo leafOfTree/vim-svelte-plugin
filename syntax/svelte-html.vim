@@ -60,7 +60,7 @@ syntax region svelteBlockBody
       \ containedin=htmlSvelteTemplate,htmlLink
       \ contains=@simpleJavascriptExpression,svelteBlockKeyword
       \ matchgroup=svelteBrace
-      \ start="\v\{:"
+      \ start="{:"
       \ end="}"
 
 syntax region svelteBlockStart
@@ -68,7 +68,7 @@ syntax region svelteBlockStart
       \ contains=@simpleJavascriptExpression,svelteBlockKeyword
       \ matchgroup=svelteBrace
       \ start="{#"
-      \ end="}\ze\s*\($\|<\)"
+      \ end="}"
 
 syntax region svelteBlockEnd
       \ containedin=htmlSvelteTemplate,htmlLink
