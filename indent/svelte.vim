@@ -123,7 +123,7 @@ function! GetSvelteIndent()
       let ind = ind - &sw
     endif
 
-    if s:IsBlockStart(prevsyns) && line !~ s:oneline_block
+    if s:IsBlockStart(prevsyns) && prevline !~ s:oneline_block
       call s:Log('increase block indent')
       let ind = ind + &sw
     endif
