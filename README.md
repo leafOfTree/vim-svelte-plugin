@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-plugin-icon.svg" width="60" height="60" alt="icon" align="left"/>
+
 # vim-svelte-plugin [![Build Status][12]](https://travis-ci.com/leafOfTree/vim-svelte-plugin)
 
 <p align="center">
