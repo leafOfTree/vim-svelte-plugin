@@ -64,17 +64,17 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 
     let g:vim_svelte_plugin_load_full_syntax = 1
 
-| variable                              | description                                                                                            | default                    |
-|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| `g:vim_svelte_plugin_load_full_syntax`\* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0 |
-| `g:vim_svelte_plugin_use_pug`\*             | Enable pug syntax for `<template lang="pug">`.                                                         | 0 |
-| `g:vim_svelte_plugin_use_coffee`            | Enable coffee syntax for `<script lang="coffee">`.                                                     | 0 |
-| `g:vim_svelte_plugin_use_typescript`        | Enable typescript syntax for `<script lang="ts">`.                                                     | 0 |
-| `g:vim_svelte_plugin_use_less`              | Enable less syntax for `<style lang="less">`.                                                          | 0 |
-| `g:vim_svelte_plugin_use_sass`              | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"`).                               | 0 |
-| `g:vim_svelte_plugin_has_init_indent`       | Initially indent one tab inside `style/script` tags.                                                   | 1 |
-| `g:vim_svelte_plugin_use_foldexpr`          | Enable builtin `foldexpr` foldmethod.                                                                  | 0 |
-| `g:vim_svelte_plugin_debug`                 | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                   | 0 |
+| variable                               | description                                                                                                                                                                 | default |
+|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| g:vim_svelte_plugin_load_full_syntax \* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0       |
+| g:vim_svelte_plugin_use_pug \*          | Enable pug syntax for `<template lang="pug">`.                                                                                                                              | 0       |
+| g:vim_svelte_plugin_use_coffee         | Enable coffee syntax for `<script lang="coffee">`.                                                                                                                          | 0       |
+| g:vim_svelte_plugin_use_typescript     | Enable typescript syntax for `<script lang="ts">`.                                                                                                                          | 0       |
+| g:vim_svelte_plugin_use_less           | Enable less syntax for `<style lang="less">`.                                                                                                                               | 0       |
+| g:vim_svelte_plugin_use_sass           | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"`).                                                                                                    | 0       |
+| g:vim_svelte_plugin_has_init_indent    | Initially indent one tab inside `style/script` tags.                                                                                                                        | 1       |
+| g:vim_svelte_plugin_use_foldexpr       | Enable builtin `foldexpr` foldmethod.                                                                                                                                       | 0       |
+| g:vim_svelte_plugin_debug              | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                                                                                        | 0       |
 
 \*: Vim may be slow if the feature is enabled. Find a balance between syntax highlight and speed. By the way, custom syntax can be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`. 
 
@@ -90,7 +90,7 @@ As there are more than one language in `.svelte` file, the different behaviors l
 
 This plugin provides functions to get the tag/subtype where the cursor is in.
 
-- `GetSvelteTag() => String` Return value is one of `'template', 'script', 'style'`.
+- **GetSvelteTag() => String**: Return value is one of `'template', 'script', 'style'`.
 
   ```vim
   " Example
@@ -102,9 +102,9 @@ This plugin provides functions to get the tag/subtype where the cursor is in.
   endfunction
   ```
 
-- `GetSvelteSubtype() => String` Return value is one of `'html', 'javascript', 'css', 'scss', ...`.
+- **GetSvelteSubtype() => String**: Return value is one of `'html', 'javascript', 'css', 'scss', ...`.
 
-- `OnChangeSvelteSubtype(subtype)` An event listener that is called when subtype changes.
+- **OnChangeSvelteSubtype(subtype)**: An event listener that is called when subtype changes.
 
     You can also define an event listener function `OnChangeSvelteSubtype(subtype)` in your `vimrc` to get the subtype and set its local options whenever it changes.
 
