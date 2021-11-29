@@ -84,7 +84,9 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 - `g:vim_svelte_plugin_load_full_syntax` applies to `HTML/Sass/Less`.
 - See <https://svelte.dev/docs#svelte_preprocess> for how to use `Less/Sass/Pug`... in svelte.
 
-For css syntax highlighting you will need the css language parser for [Treesiter](https://github.com/nvim-treesitter/nvim-treesitter), you can install it like so:
+### Neovim & [Treesiter](https://github.com/nvim-treesitter/nvim-treesitter)
+
+For css syntax highlighting you will need the css language parser for [Treesiter](https://github.com/nvim-treesitter/nvim-treesitter). You can install it like so:
 
 ```
 :TSInstall css
