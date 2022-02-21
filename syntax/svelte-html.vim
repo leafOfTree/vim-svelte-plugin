@@ -37,18 +37,26 @@ syntax region svelteExpression
       \ end="}\(}\|;\)\@!"
 
 syntax region svelteExpression 
-      \ containedin=htmlSvelteTemplate,svelteValue,htmlString,htmlValue,htmlArg,htmlTag,htmlAttr
-      \ contains=@simpleJavascriptExpression,svelteAtTags
-      \ matchgroup=svelteBrace
-      \ start="{"
-      \ end="}\(}\|;\)\@!"
-
-syntax region svelteExpression 
       \ containedin=htmlTag
       \ contains=@simpleJavascriptExpression,svelteAtTags,svelteShortProp
       \ matchgroup=svelteBrace
       \ start="{"
       \ end="}\(}\|;\)\@!"
+
+syntax region svelteExpression 
+      \ containedin=svelteValue,htmlValue,htmlAttr
+      \ contains=@simpleJavascriptExpression
+      \ matchgroup=svelteBrace
+      \ start="{"
+      \ end="\(}\)\@<=}"
+
+syntax region svelteExpression 
+      \ containedin=htmlSvelteTemplate,svelteValue,htmlString,htmlArg,htmlTag,htmlAttr,htmlValue,htmlAttr
+      \ contains=@simpleJavascriptExpression,svelteAtTags
+      \ matchgroup=svelteBrace
+      \ start="{"
+      \ end="}\(}\|;\)\@!"
+      \ oneline
 
 syntax match svelteAtTags '@\(html\|debug\)'
 syntax match svelteShortProp '\<\w\+\>'
