@@ -36,13 +36,7 @@ syntax region svelteExpression
       \ start="{"
       \ end="}\(}\|;\)\@!"
 
-syntax region svelteExpression 
-      \ containedin=htmlTag
-      \ contains=@simpleJavascriptExpression,svelteAtTags,svelteShortProp
-      \ matchgroup=svelteBrace
-      \ start="{"
-      \ end="}\(}\|;\)\@!"
-
+" Multiple lines expressions are supposed to end with '}}'
 syntax region svelteExpression 
       \ containedin=svelteValue,htmlValue,htmlAttr
       \ contains=@simpleJavascriptExpression
@@ -59,7 +53,6 @@ syntax region svelteExpression
       \ oneline
 
 syntax match svelteAtTags '@\(html\|debug\)'
-syntax match svelteShortProp '\<\w\+\>'
 
 syntax region svelteBlockBody
       \ containedin=htmlSvelteTemplate,htmlLink
@@ -117,6 +110,7 @@ endif
 
 highlight default link svelteExpression None
 highlight default link svelteBrace Type
+highlight default link svelteAtTags Type
 highlight default link svelteBlockKeyword Statement
 highlight default link svelteComponentName htmlTagName
 highlight default link javaScriptTemplateString String
@@ -126,6 +120,5 @@ highlight default link javaScriptNumber	Constant
 highlight default link javaScriptOperator	Operator
 highlight default link svelteAttr	htmlTag
 highlight default link svelteAttrEqual htmlTag
-highlight default link svelteShortProp htmlValue
 "}}}
 " vim: fdm=marker
