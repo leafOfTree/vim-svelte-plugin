@@ -77,8 +77,7 @@ syntax region svelteBlockEnd
 
 syntax keyword svelteBlockKeyword if else each await then catch as
 
-syntax cluster simpleJavascriptExpression 
-      \ contains=javaScript.*
+syntax cluster simpleJavascriptExpression contains=\CjavaScript.*
 
 " Redefine JavaScript syntax
 syntax region javaScriptStringS	
