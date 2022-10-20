@@ -1,0 +1,34 @@
+name: vim-svelte-plugin test
+on: [push]
+jobs: 
+  Basic-Test:
+    runs-on: ubuntu-latest
+    steps: 
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+
+      - name: Install neovim
+        run: |
+          sudo add-apt-repository ppa:neovim-ppa/stable -y
+          sudo apt-get update
+          sudo apt-get -y install neovim
+      - name: Clone vim-test and syntax dependencies
+        run: |
+          git clone https://github.com/leafOfTree/vim-test ../vim-test --depth=1 
+          git clone https://github.com/digitaltoad/vim-pug ../vim-pug --depth=1
+          git clone https://github.com/kchmck/vim-coffee-script ../vim-coffee-script --depth=1
+          git clone https://github.com/leafgarland/typescript-vim ../typescript-vim --depth=1
+
+      - name: Run test
+        run: |
+          bash ../vim-test/start.sh svelte vim-svelte-plugin
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
