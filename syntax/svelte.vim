@@ -281,5 +281,6 @@ syntax region  typescriptTemplate
 syntax match htmlArg '\v<data(-[.a-z0-9]+)+>' containedin=@HTMLSyntax
 "}}}
 
+syntax sync fromstart
 let b:current_syntax = 'svelte'
 " vim: fdm=marker
