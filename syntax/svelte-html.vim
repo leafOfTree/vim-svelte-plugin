@@ -75,7 +75,7 @@ syntax region svelteBlockEnd
       \ start="{\/"
       \ end="}"
 
-syntax keyword svelteBlockKeyword if else each await then catch as
+syntax keyword svelteBlockKeyword if else each await then catch as key
 
 syntax cluster simpleJavascriptExpression 
       \contains=\CjavaScript.*
