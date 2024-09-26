@@ -36,13 +36,13 @@ syntax region svelteExpression
       \ start="{"
       \ end="}\(}\|;\)\@!"
 
-" Multiple lines expressions are supposed to end with '}}' or ')}'
+" Multiple lines expressions are supposed to end with '}}', ')}' or ']}'
 syntax region svelteExpression 
       \ containedin=svelteValue,htmlValue,htmlAttr
       \ contains=@simpleJavascriptExpression
       \ matchgroup=svelteBrace
       \ start="{"
-      \ end="\(}\)\@<=}\|\()\)\@<=}"
+      \ end="\(}\)\@<=}\|\()\)\@<=}\|\(]\)\@<=}"
 
 syntax region svelteExpression 
       \ containedin=htmlSvelteTemplate,svelteValue,htmlString,htmlArg,htmlTag,htmlAttr,htmlValue,htmlAttr
