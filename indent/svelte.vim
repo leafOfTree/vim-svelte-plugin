@@ -26,6 +26,7 @@ let s:empty_tagname = '(area|base|br|col|embed|hr|input|img|keygen|link|meta|par
 let s:empty_tag = '\v\C\<'.s:empty_tagname.'[^/]*\>' 
 let s:empty_tag_start = '\v\<'.s:empty_tagname.'[^\>]*$' 
 let s:empty_tag_end = '\v^\s*[^\<\>\/]*\>\s*' 
+let s:tag_start = '^<$'
 let s:tag_end = '\v^\s*\/?\>\s*'
 let s:oneline_block = '^\s*{#.*{/.*}\s*$'
 "}}}
@@ -170,6 +171,9 @@ function! GetSvelteIndent()
   elseif s:SynStyle(cursyn)
     call s:Log('syntax: style')
     let ind = GetCSSIndent()
+  elseif s:IsTagStart(curline)
+    call s:Log('syntax: tagstart')
+    let ind = 0
   else
     call s:Log('syntax: javascript')
     if len(b:javascript_indentexpr)
@@ -197,6 +201,10 @@ function! GetSvelteIndent()
 
   call s:Log('indent: '.ind)
   return ind
+endfunction
+
+function! s:IsTagStart(curline)
+  return a:curline =~ s:tag_start
 endfunction
 
 function! s:IsBlockStart(prevsyns)
