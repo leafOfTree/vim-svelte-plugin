@@ -39,6 +39,7 @@ let s:oneline_block = '^\s*{#.*{/.*}\s*$'
 let s:use_pug = svelte#GetConfig('use_pug', 0)
 let s:use_sass = svelte#GetConfig('use_sass', 0)
 let s:use_coffee = svelte#GetConfig('use_coffee', 0)
+let s:use_stylus = svelte#GetConfig('use_stylus', 0)
 let s:use_typescript = svelte#GetConfig('use_typescript', 0)
 let s:has_init_indent = svelte#GetConfig('has_init_indent', 1)
 let s:debug = svelte#GetConfig('debug', 0)

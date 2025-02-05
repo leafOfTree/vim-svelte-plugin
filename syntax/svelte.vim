@@ -108,6 +108,7 @@ endif
 " If sass is enabled, load sass syntax 
 if s:use_stylus
   call s:LoadSyntax('@StylusSyntax', 'stylus')
+  runtime! after/syntax/stylus.vim
 endif
 
 " If sass is enabled, load sass syntax 
