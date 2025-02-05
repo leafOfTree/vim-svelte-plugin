@@ -22,6 +22,7 @@ let s:load_full_syntax = svelte#GetConfig('load_full_syntax', 0)
 let s:use_pug = svelte#GetConfig('use_pug', 0)
 let s:use_less = svelte#GetConfig('use_less', 0)
 let s:use_sass = svelte#GetConfig('use_sass', 0)
+let s:use_stylus = svelte#GetConfig('use_stylus', 0)
 let s:use_coffee = svelte#GetConfig('use_coffee', 0)
 let s:use_typescript = svelte#GetConfig('use_typescript', 0)
 "}}}
@@ -102,6 +103,11 @@ endif
 if s:use_less
   call s:LoadSyntax('@LessSyntax', 'less')
   runtime! after/syntax/less.vim
+endif
+
+" If sass is enabled, load sass syntax 
+if s:use_stylus
+  call s:LoadSyntax('@StylusSyntax', 'stylus')
 endif
 
 " If sass is enabled, load sass syntax 
@@ -204,6 +210,10 @@ syntax region cssScssSvelteStyle fold
       \ start=+<style[^>]*lang="scss"[^>]*>+ 
       \ end=+</style>+ 
       \ keepend contains=@SassSyntax,svelteTag
+syntax region cssStylusSvelteStyle fold
+      \ start=+<style[^>]*lang="stylus"[^>]*>+ 
+      \ end=+</style>+ 
+      \ keepend contains=@StylusSyntax,svelteTag
 
 syntax region svelteTag 
       \ start=+^<[^/]+ end=+>+  skip=+></+
@@ -243,11 +253,20 @@ if s:use_less
         \ contained containedin=cssLessSvelteStyle
         \ start="{" end="}" 
 endif
+
 if s:use_sass
   silent! syntax clear sassDefinition
   syntax region cssSassDefinition matchgroup=cssBraces 
         \ contains=@SassSyntax,cssSassDefinition
         \ contained containedin=cssScssSvelteStyle,cssSassSvelteStyle
+        \ start="{" end="}" 
+endif
+
+if s:use_stylus
+  silent! syntax clear stylusDefinition
+  syntax region cssStylusDefinition matchgroup=cssBraces 
+        \ contains=@StylusSyntax,cssStylusDefinition
+        \ contained containedin=cssStylusSvelteStyle
         \ start="{" end="}" 
 endif
 
