@@ -72,6 +72,11 @@ if s:use_pug
   let &formatoptions = s:save_formatoptions
 endif
 
+if s:use_stylus
+  unlet! b:did_indent
+  runtime! indent/stylus.vim
+endif
+
 if s:use_sass
   unlet! b:did_indent
   runtime! indent/sass.vim
@@ -169,6 +174,9 @@ function! GetSvelteIndent()
   elseif s:SynSASS(cursyn)
     call s:Log('syntax: sass')
     let ind = GetSassIndent()
+  elseif s:SynStylus(cursyn)
+    call s:Log('syntax: stylus')
+    let ind = GetStylusIndent()
   elseif s:SynStyle(cursyn)
     call s:Log('syntax: style')
     let ind = GetCSSIndent()
@@ -295,6 +303,10 @@ endfunction
 
 function! s:SynTypeScript(syn)
   return a:syn ==? 'typescriptSvelteScript'
+endfunction
+
+function! s:SynStylus(syn)
+  return a:syn ==? 'cssStylusSvelteStyle'
 endfunction
 
 function! s:SynSASS(syn)
