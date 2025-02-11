@@ -39,6 +39,7 @@ let s:oneline_block = '^\s*{#.*{/.*}\s*$'
 let s:use_pug = svelte#GetConfig('use_pug', 0)
 let s:use_sass = svelte#GetConfig('use_sass', 0)
 let s:use_coffee = svelte#GetConfig('use_coffee', 0)
+let s:use_stylus = svelte#GetConfig('use_stylus', 0)
 let s:use_typescript = svelte#GetConfig('use_typescript', 0)
 let s:has_init_indent = svelte#GetConfig('has_init_indent', 1)
 let s:debug = svelte#GetConfig('debug', 0)
@@ -69,6 +70,11 @@ if s:use_pug
   let s:save_formatoptions = &formatoptions
   runtime! indent/pug.vim
   let &formatoptions = s:save_formatoptions
+endif
+
+if s:use_stylus
+  unlet! b:did_indent
+  runtime! indent/stylus.vim
 endif
 
 if s:use_sass
@@ -168,6 +174,9 @@ function! GetSvelteIndent()
   elseif s:SynSASS(cursyn)
     call s:Log('syntax: sass')
     let ind = GetSassIndent()
+  elseif s:SynStylus(cursyn)
+    call s:Log('syntax: stylus')
+    let ind = GetStylusIndent()
   elseif s:SynStyle(cursyn)
     call s:Log('syntax: style')
     let ind = GetCSSIndent()
@@ -294,6 +303,10 @@ endfunction
 
 function! s:SynTypeScript(syn)
   return a:syn ==? 'typescriptSvelteScript'
+endfunction
+
+function! s:SynStylus(syn)
+  return a:syn ==? 'cssStylusSvelteStyle'
 endfunction
 
 function! s:SynSASS(syn)
