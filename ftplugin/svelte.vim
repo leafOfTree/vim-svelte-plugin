@@ -19,3 +19,12 @@ endif
 " indentexpr
 let b:syng_str = '^\%(.*template\)\@!.*string\|special'
 let b:syng_strcom = '^\%(.*template\)\@!.*string\|comment\|regex\|special\|doc'
+
+if executable('npx')
+  compiler svelte-check
+endif
+" let &keywordprg = ':Open https://devdocs.io/\#q='..&filetype
+nnoremap <buffer> <expr> <F1> '<cmd>Open https://devdocs.io/\#q='..&filetype..' '..expand('<cword>')..'<CR>'
+if exists('*getregion')
+  vnoremap <buffer> <expr> <F1> '<cmd>Open https://devdocs.io/\#q='..&filetype..' '..join(getregion(getpos('v'), getpos('.')))..'<CR>'
+endif
