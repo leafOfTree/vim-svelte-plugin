@@ -7,7 +7,7 @@ let b:syng_str = '^\%(.*template\)\@!.*string\|special'
 let b:syng_strcom = '^\%(.*template\)\@!.*string\|comment\|regex\|special\|doc'
 
 let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin . " | " : "") .
-      \ "unlet b:syng_str b:syng_strcom"
+      \ "unlet! b:syng_str b:syng_strcom"
 
 if !has('nvim')
   setlocal matchpairs+=<:>
