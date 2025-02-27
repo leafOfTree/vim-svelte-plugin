@@ -6,11 +6,12 @@ let b:did_ftplugin = 1
 let b:syng_str = '^\%(.*template\)\@!.*string\|special'
 let b:syng_strcom = '^\%(.*template\)\@!.*string\|comment\|regex\|special\|doc'
 
-let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin . " | " : "") . "unlet b:syng_str b:syng_strcom"
+let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin . " | " : "") .
+      \ "unlet b:syng_str b:syng_strcom"
 
 if !has('nvim')
   setlocal matchpairs+=<:>
-  let b:undo_ftplugin .= "| setlocal matchpairs<"
+  let b:undo_ftplugin .= " | setlocal matchpairs<"
 endif
 
 if exists("loaded_matchit")
@@ -21,7 +22,7 @@ if exists("loaded_matchit")
         \ '<\@<=\([^/][^ \t>]*\)[^>]*\%(>\|$\):<\@<=/\1>,' .
         \ '{#\(if\|each\)[^}]*}:{\:else[^}]*}:{\/\(if\|each\)},' .
         \ '{#await[^}]*}:{\:then[^}]*}:{\/await},'
-  let b:undo_ftplugin .= " | unlet b:match_ignorecase b:match_words"
+  let b:undo_ftplugin .= " | unlet! b:match_ignorecase b:match_words"
 endif
 
 if executable('npx') && !empty(globpath(&runtimepath, 'compiler/svelte-check.vim'))
