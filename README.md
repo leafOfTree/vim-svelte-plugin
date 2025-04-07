@@ -75,6 +75,7 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 | g:vim_svelte_plugin_has_init_indent    | Initially indent one tab inside `style/script` tags.                                                                                                                        | 1       |
 | g:vim_svelte_plugin_use_foldexpr       | Enable builtin `foldexpr` foldmethod.                                                                                                                                       | 0       |
 | g:vim_svelte_plugin_debug              | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                                                                                        | 0       |
+| g:vim_svelte_plugin_open_devdocs       | Key mapping to search documentation on https://devdocs.io for the word under the cursor or selected | `<F1>`       |
 
 \*: Vim may be slow if the feature is enabled. Find a balance between syntax highlight and speed. By the way, custom syntax can be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`.
 
