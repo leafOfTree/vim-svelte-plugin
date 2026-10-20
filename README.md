@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-plugin-icon.svg" width="60" height="60" alt="icon" align="left"/>
+<img src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-plugin-icon.svg" width="60" alt="icon" align="left"/>
 
 # vim-svelte-plugin
 <p align="center">
@@ -149,6 +149,24 @@ For example, the builtin syntax `sass.vim` and `less.vim` in vim8.1 runtime alwa
 +   runtime! syntax/css.vim
 + endif
 ```
+
+## Tests
+
+Run tests with Vim and Neovim, whichever is installed
+
+```sh
+./test/run.sh
+./test/run.sh basic template  # Only these cases
+```
+
+Each case is a `.svelte` file in [test/cases](test/cases), with an optional `.vim` file for the config and checks. A case fails if
+
+- indenting the whole file changes it
+- with `g:test_flatten`, indenting the file after removing all indent doesn't restore it
+- a check in `Check()` fails, such as syntax, `GetSvelteTag()`, `GetSvelteSubtype()` or fold level
+- there is an error message
+
+Tests also run on GitHub Actions for each push and pull request.
 
 ## See also
 

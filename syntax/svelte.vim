@@ -143,28 +143,32 @@ syntax include syntax/svelte-html.vim
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " All start with html/javascript/css for emmet-vim in-file type detection
+" Tag name and attributes. '>' may be in expressions like {() => a > b}
+let s:tag_start = '<[-:a-zA-Z0-9]\+\%([^>{]\|{[^}]*}\)*'
+
 " Normal tag template
-syntax region htmlSvelteTemplate fold
-      \ start=+<[-:a-zA-Z0-9]\+[^>]*>$+ 
-      \ end=+^</[-:a-zA-Z0-9]\+>+ 
-      \ keepend contains=@HTMLSyntax
-" Start tag across multiple lines or Empty tag across multiple lines
-syntax region htmlSvelteTemplate fold
-      \ start=+<[-:a-zA-Z0-9]\+[^>]*$+ 
-      \ end=+^\(<\/[-:a-zA-Z0-9]\+>\|\(\S[^<]*\)\?\/>\)+
-      \ keepend contains=@HTMLSyntax
+execute 'syntax region htmlSvelteTemplate fold'
+      \ 'start=+'.s:tag_start.'>$+'
+      \ 'end=+^</[-:a-zA-Z0-9]\+>+'
+      \ 'keepend contains=@HTMLSyntax'
+" Start tag across multiple lines or Empty tag across multiple lines, which
+" may end in an expression
+execute 'syntax region htmlSvelteTemplate fold'
+      \ 'start=+'.s:tag_start.'\%({[^}]*\)\?$+'
+      \ 'end=+^\(<\/[-:a-zA-Z0-9]\+>\|\(\S[^<]*\)\?\/>\)+'
+      \ 'keepend contains=@HTMLSyntax'
 
 " Tag in one line
-syntax match htmlSvelteTemplate fold
-      \ +<[-:a-zA-Z0-9]\+[^>]*>.*</[-:a-zA-Z0-9]\+>+ 
-      \ contains=@HTMLSyntax
+execute 'syntax match htmlSvelteTemplate fold'
+      \ '+'.s:tag_start.'>.*</[-:a-zA-Z0-9]\+>+'
+      \ 'contains=@HTMLSyntax'
 " Empty tag in one line
+execute 'syntax match htmlSvelteTemplate fold'
+      \ '+'.s:tag_start.'/>+'
+      \ 'contains=@HTMLSyntax'
+" @html, @debug, @render tag in one line
 syntax match htmlSvelteTemplate fold
-      \ +<[-:a-zA-Z0-9]\+[^>]*/>+ 
-      \ contains=@HTMLSyntax
-" @html,@debug tag in one line
-syntax match htmlSvelteTemplate fold
-      \ +{@\(html\|debug\)[^}]*}+ 
+      \ +{@\(html\|debug\|render\)[^}]*}+ 
       \ contains=@HTMLSyntax
 " Control blocks like {#if ...}, {#each ...}
 syntax region htmlSvelteTemplate fold
