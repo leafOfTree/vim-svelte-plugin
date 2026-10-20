@@ -52,7 +52,7 @@ syntax region svelteExpression
       \ end="}\(}\|;\)\@!"
       \ oneline
 
-syntax match svelteAtTags '@\(html\|debug\)'
+syntax match svelteAtTags '@\(html\|debug\|render\|const\)'
 
 syntax region svelteBlockBody
       \ containedin=htmlSvelteTemplate,htmlLink
@@ -75,7 +75,7 @@ syntax region svelteBlockEnd
       \ start="{\/"
       \ end="}"
 
-syntax keyword svelteBlockKeyword if else each await then catch as key
+syntax keyword svelteBlockKeyword if else each await then catch as key snippet
 
 syntax cluster simpleJavascriptExpression 
       \contains=\CjavaScript.*
