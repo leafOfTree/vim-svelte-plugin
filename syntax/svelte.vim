@@ -207,8 +207,9 @@ syntax region cssLessSvelteStyle fold
       \ start=+<style[^>]*lang="less"[^>]*>+ 
       \ end=+</style>+ 
       \ keepend contains=@LessSyntax,svelteTag
+" SugarSS (lang="sss") is indent-based like sass
 syntax region cssSassSvelteStyle fold
-      \ start=+<style[^>]*lang="sass"[^>]*>+ 
+      \ start=+<style[^>]*lang="\(sass\|sss\)"[^>]*>+ 
       \ end=+</style>+ 
       \ keepend contains=@SassSyntax,svelteTag
 syntax region cssScssSvelteStyle fold
