@@ -6,4 +6,7 @@ function! Check()
   for lnum in range(1, len(levels))
     call ExpectFoldlevel(lnum, levels[lnum - 1])
   endfor
+  " Undo when filetype changes
+  setlocal filetype=text
+  call ExpectEqual(&l:foldmethod, 'manual', 'foldmethod after undo')
 endfunction
