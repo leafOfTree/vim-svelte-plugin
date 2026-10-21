@@ -3,3 +3,4 @@ test.svelte
 .idea
 test/deps/
 doc/tags
+test/other/
