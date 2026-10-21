@@ -52,9 +52,9 @@ It combines HTML, CSS and JavaScript syntax and indent in one file.
 Supports
 
 - Svelte directives.
-- Less/Sass/Scss, Pug with [vim-pug][4], Coffee with [vim-coffee-script][6], TypeScript with [typescript-vim][14] or [yats.vim][15].^
+- Blocks with any syntax by `lang="..."`, like TypeScript, Less/Sass/Scss, Stylus, Pug with [vim-pug][4] and Coffee with [vim-coffee-script][6].^
 
-    Relative plugins need to be installed.
+    Relative plugins need to be installed if not provided by Vim.
 
 - A builtin `foldexpr` foldmethod.^
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
@@ -63,31 +63,77 @@ Supports
 
 ## Configuration
 
-Set global variable to `1` to enable or `0` to disable. Ex:
+`g:vim_svelte_plugin_config` is the recommended configuration. Its default value is below, which you can copy as a starting point
 
-    let g:vim_svelte_plugin_load_full_syntax = 1
+```vim
+let g:vim_svelte_plugin_config = {
+      \ 'syntax': {
+      \   'script': ['javascript'],
+      \   'style': ['css'],
+      \   'template': [],
+      \ },
+      \ 'full_syntax': ['pug', 'coffee', 'typescript'],
+      \ 'initial_indent': ['script', 'style'],
+      \ 'attribute': 0,
+      \ 'foldexpr': 0,
+      \ 'open_devdocs': '<F1>',
+      \ 'debug': 0,
+      \ }
+```
 
-| variable                               | description                                                                                                                                                                 | default |
-|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| g:vim_svelte_plugin_load_full_syntax \* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0       |
-| g:vim_svelte_plugin_use_pug \*          | Enable pug syntax for `<template lang="pug">`.                                                                                                                              | 0       |
-| g:vim_svelte_plugin_use_coffee         | Enable coffee syntax for `<script lang="coffee">`.                                                                                                                          | 0       |
-| g:vim_svelte_plugin_use_typescript     | Enable typescript syntax for `<script lang="ts">`. If disabled, it is highlighted and indented as JavaScript.                                                               | 0       |
-| g:vim_svelte_plugin_use_less           | Enable less syntax for `<style lang="less">`.                                                                                                                               | 0       |
-| g:vim_svelte_plugin_use_sass           | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"` and SugarSS `lang="sss"`).                                                                        | 0       |
-| g:vim_svelte_plugin_use_stylus           | Enable stylus syntax for `<style lang="stylus">`.                                                                                                                               | 0       |
-| g:vim_svelte_plugin_has_init_indent    | Initially indent one tab inside `style/script` tags.                                                                                                                        | 1       |
-| g:vim_svelte_plugin_use_foldexpr       | Enable builtin `foldexpr` foldmethod.                                                                                                                                       | 0       |
-| g:vim_svelte_plugin_debug              | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                                                                                        | 0       |
-| g:vim_svelte_plugin_highlight_svelte_attr | Highlight the key of svelte attributes like `on:click` and `bind:value` as `Type`, and their value `{...}` as normal text instead of string. | 0       |
-| g:vim_svelte_plugin_open_devdocs       | Key mapping to search documentation on https://devdocs.io for the word under the cursor or selected | `<F1>`       |
+- **syntax**: syntax of `<script>`, `<style>` and `<template lang="...">` blocks
+    - **key**: `script`, `style` or `template`. Others are ignored, as markup outside `<script>` and `<style>` is always the svelte template
+    - **value**: *string list*. Syntax for the block
+        - `lang="..."` on the block tag decides the syntax, in double or single quotes or without quotes. `typescript` matches `lang="ts"` and `lang="typescript"`, `sass` matches `lang="sass"` and SugarSS `lang="sss"`
+        - Without `lang="..."`, or if it's not in the list, the first syntax is used. `<script lang="ts">` is highlighted and indented as the first syntax of `script` if `typescript` is not in the list
+        - Syntax plugins need to be installed if not provided by Vim, like [vim-pug][4], [vim-coffee-script][6], [typescript-vim][14] or [yats.vim][15]
+        - Each key replaces the default of the same key, so `{'syntax': {'script': ['javascript', 'typescript']}}` keeps `style` as `['css']`
+- **full_syntax**: *string list*. Syntax whose files are loaded from all of `runtimepath`, including plugins. Others are loaded only from `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax`, or from all of `runtimepath` if not found there\*
+- **initial_indent**: *string list*. Block tag, syntax or `tag.syntax` like `style.scss` to indent one level initially
+- **attribute**: Highlight the key of svelte attributes like `on:click` and `bind:value` as `Type`, and their value `{...}` as normal text instead of string
+- **foldexpr**: Enable builtin `foldexpr` foldmethod
+- **open_devdocs**: Key mapping to search documentation on https://devdocs.io for the word under the cursor or selected. `''` to disable it
+- **debug**: Echo debug messages in `messages` list. Useful to debug if unexpected indents occur
 
-\*: Vim may be slow if the feature is enabled. Find a balance between syntax highlight and speed. By the way, custom syntax can be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`.
+For `0`/`1` options, set `1` to enable or `0` to disable. Example:
+
+```vim
+let g:vim_svelte_plugin_config = {
+      \ 'syntax': {
+      \   'script': ['javascript', 'typescript'],
+      \   'style': ['css', 'scss', 'sass'],
+      \ },
+      \ 'foldexpr': 1,
+      \ }
+```
+
+\*: Vim may be slow when loading many syntax files. Find a balance between syntax highlight and speed. By the way, custom syntax can be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`.
+
+<details>
+<summary><a>Previous variables</a></summary>
+
+Variables below still work. They decide the default of `g:vim_svelte_plugin_config`, whose options take precedence over them.
+
+| variable | same as in `g:vim_svelte_plugin_config` |
+|----------|-----------------------------------------|
+| g:vim_svelte_plugin_load_full_syntax | `full_syntax` with `html`, `css`, `javascript`, `less`, `sass` and `stylus` |
+| g:vim_svelte_plugin_use_pug | `pug` in `syntax.template` |
+| g:vim_svelte_plugin_use_coffee | `coffee` in `syntax.script` |
+| g:vim_svelte_plugin_use_typescript | `typescript` in `syntax.script` |
+| g:vim_svelte_plugin_use_less | `less` in `syntax.style` |
+| g:vim_svelte_plugin_use_sass | `scss` and `sass` in `syntax.style` |
+| g:vim_svelte_plugin_use_stylus | `stylus` in `syntax.style` |
+| g:vim_svelte_plugin_has_init_indent | `initial_indent` as `['script', 'style']`, or `[]` if `0` |
+| g:vim_svelte_plugin_use_foldexpr | `foldexpr` |
+| g:vim_svelte_plugin_debug | `debug` |
+| g:vim_svelte_plugin_highlight_svelte_attr | `attribute` |
+| g:vim_svelte_plugin_open_devdocs | `open_devdocs` |
+
+</details>
 
 **Note**
 
 - `filetype` is set to `svelte` so autocmds and other custom settings for `javascript` have to be manually enabled for `svelte`.
-- `g:vim_svelte_plugin_load_full_syntax` applies to `HTML/Sass/Less`.
 - See <https://svelte.dev/docs/svelte/svelte-compiler#preprocess> for how to use `Less/Sass/Pug`... in svelte.
 
 ### Neovim & [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)

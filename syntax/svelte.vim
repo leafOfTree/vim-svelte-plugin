@@ -18,13 +18,10 @@ let b:current_loading_main_syntax = 'svelte'
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:load_full_syntax = svelte#GetConfig('load_full_syntax', 0)
-let s:use_pug = svelte#GetConfig('use_pug', 0)
-let s:use_less = svelte#GetConfig('use_less', 0)
-let s:use_sass = svelte#GetConfig('use_sass', 0)
-let s:use_stylus = svelte#GetConfig('use_stylus', 0)
-let s:use_coffee = svelte#GetConfig('use_coffee', 0)
-let s:use_typescript = svelte#GetConfig('use_typescript', 0)
+let s:config = svelte#GetSvelteConfig()
+let s:config_syntax = s:config.syntax
+let s:full_syntax = s:config.full_syntax
+let s:syntax_list = svelte#GetSyntaxList(s:config_syntax)
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -32,26 +29,60 @@ let s:use_typescript = svelte#GetConfig('use_typescript', 0)
 " Functions {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:LoadSyntax(group, type)
-  if s:load_full_syntax
-    call s:LoadFullSyntax(a:group, a:type)
-  else
-    call s:LoadDefaultSyntax(a:group, a:type)
-  endif
+" Syntax groups. Keep the names of html.vim and vim-coffee-script/after/html.vim
+let s:groups = {
+      \ 'html': '@HTMLSyntax',
+      \ 'css': '@htmlCss',
+      \ 'javascript': '@htmlJavaScript',
+      \ 'coffee': '@htmlCoffeeScript',
+      \ 'typescript': '@TypeScript',
+      \ 'pug': '@PugSyntax',
+      \ 'less': '@LessSyntax',
+      \ 'sass': '@SassSyntax',
+      \ 'scss': '@SassSyntax',
+      \ 'stylus': '@StylusSyntax',
+      \ }
+
+" Syntax files to load, scss is in sass.vim
+let s:syntax_files = {'scss': 'sass'}
+
+function! s:GetGroup(syntax)
+  return get(s:groups, a:syntax, '@'.a:syntax.'Syntax')
 endfunction
 
+function! s:LoadSyntax(group, type)
+  if index(s:full_syntax, a:type) != -1
+    call s:LoadFullSyntax(a:group, a:type)
+    return 1
+  elseif !s:LoadDefaultSyntax(a:group, a:type)
+    " Not in Vim, maybe from plugins
+    call s:LoadFullSyntax(a:group, a:type)
+    return 1
+  endif
+  return 0
+endfunction
+
+" Load syntax only in $VIMRUNTIME/syntax, $VIM/vimfiles/syntax and
+" ~/.vim/syntax. Return whether any is found
 function! s:LoadDefaultSyntax(group, type)
   unlet! b:current_syntax
+  let loaded = 0
   let syntaxPaths = ['$VIMRUNTIME', '$VIM/vimfiles', '$HOME/.vim']
   for path in syntaxPaths
     let file = expand(path).'/syntax/'.a:type.'.vim'
     if filereadable(file)
       execute 'syntax include '.a:group.' '.file
+      let loaded = 1
     endif
   endfor
+  return loaded
 endfunction
 
+" Load syntax in 'runtimepath', including plugins
 function! s:LoadFullSyntax(group, type)
+  if empty(globpath(&runtimepath, 'syntax/'.a:type.'.vim'))
+    return
+  endif
   call s:SetCurrentSyntax(a:type)
   exec 'syntax include '.a:group.' syntax/'.a:type.'.vim'
 endfunction
@@ -91,42 +122,21 @@ endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" Load pre-processors syntax {{{
+" Load syntax in config like pre-processors {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" If pug is enabled, load vim-pug syntax
-if s:use_pug
-  call s:LoadFullSyntax('@PugSyntax', 'pug')
-endif
-
-" If less is enabled, load less syntax 
-if s:use_less
-  call s:LoadSyntax('@LessSyntax', 'less')
-  runtime! after/syntax/less.vim
-endif
-
-" If sass is enabled, load sass syntax 
-if s:use_stylus
-  call s:LoadSyntax('@StylusSyntax', 'stylus')
-  runtime! after/syntax/stylus.vim
-endif
-
-" If sass is enabled, load sass syntax 
-if s:use_sass
-  call s:LoadSyntax('@SassSyntax', 'sass')
-  runtime! after/syntax/sass.vim
-endif
-
-" If CoffeeScript is enabled, load the syntax. Keep name consistent with
-" vim-coffee-script/after/html.vim
-if s:use_coffee
-  call s:LoadFullSyntax('@htmlCoffeeScript', 'coffee')
-endif
-
-" If TypeScript is enabled, load the syntax.
-if s:use_typescript
-  call s:LoadFullSyntax('@TypeScript', 'typescript')
-endif
+let s:loaded_files = []
+for s:syntax in s:syntax_list
+  let s:file = get(s:syntax_files, s:syntax, s:syntax)
+  if index(['html', 'css', 'javascript'], s:syntax) != -1
+        \ || index(s:loaded_files, s:file) != -1
+    continue
+  endif
+  call add(s:loaded_files, s:file)
+  if !s:LoadSyntax(s:GetGroup(s:syntax), s:file)
+    execute 'runtime! after/syntax/'.s:file.'.vim'
+  endif
+endfor
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,62 +186,77 @@ syntax region htmlSvelteTemplate fold
       \ end=+^{/[-a-zA-Z0-9]\+}+ 
       \ keepend contains=@HTMLSyntax
 
-syntax region javascriptSvelteScript fold
-      \ start=+<script[^>]*>+ 
-      \ end=+</script>+ 
-      \ keepend 
-      \ contains=@htmlJavaScript,jsImport,jsExport,svelteTag,svelteKeyword
-
-syntax region cssSvelteStyle fold
-      \ start=+<style[^>]*>+ 
-      \ end=+</style>+ 
-      \ keepend contains=@htmlCss,svelteTag
-
-" Preprocessors syntax
-" lang="..." in double quotes, also in single quotes or without quotes if the
-" language is enabled. Otherwise those stay in the default language as before
-function! s:Lang(lang, enabled)
-  return a:enabled
-        \ ? 'lang=["'']\?'.a:lang.'\>["'']\?'
-        \ : 'lang="'.a:lang.'"'
+" Blocks <script>, <style> and <template lang="..."> by config. Name like
+" javascriptSvelteScript and cssScssSvelteStyle with css prefix for emmet-vim
+function! s:GetName(syntax, tag)
+  let Upper = {str -> toupper(str[0]).str[1:]}
+  if a:tag ==# 'style' && a:syntax !=# 'css'
+    return 'css'.Upper(a:syntax).'SvelteStyle'
+  endif
+  return a:syntax.'Svelte'.Upper(a:tag)
 endfunction
 
-execute 'syntax region pugSvelteTemplate fold'
-      \ 'start=+<template[^>]*'.s:Lang('pug', s:use_pug).'[^>]*>+'
-      \ 'end=+</template>+'
-      \ 'keepend contains=@PugSyntax,svelteTag'
+function! s:GetContains(syntax)
+  let contains = s:GetGroup(a:syntax).',svelteTag'
+  if a:syntax ==# 'javascript'
+    let contains .= ',jsImport,jsExport,svelteKeyword'
+  elseif a:syntax ==# 'coffee'
+    let contains .= ',jsImport,jsExport'
+  endif
+  return contains
+endfunction
 
-execute 'syntax region coffeeSvelteScript fold'
-      \ 'start=+<script[^>]*'.s:Lang('coffee', s:use_coffee).'[^>]*>+'
-      \ 'end=+</script>+'
-      \ 'keepend contains=@htmlCoffeeScript,jsImport,jsExport,svelteTag'
+" Values of lang attribute for syntax. SugarSS (lang="sss") is indent-based
+" like sass
+let s:lang_names = {'typescript': '\(ts\|typescript\)', 'sass': '\(sass\|sss\)'}
 
-" Without TypeScript syntax enabled, highlight it as JavaScript
-execute 'syntax region typescriptSvelteScript fold'
-      \ 'start=+<script[^>]*'.s:Lang('\(ts\|typescript\)', 1).'[^>]*>+'
-      \ 'end=+</script>+'
-      \ 'keepend'
-      \ s:use_typescript
-      \ ? 'contains=@TypeScript,svelteTag'
-      \ : 'contains=@htmlJavaScript,jsImport,jsExport,svelteTag,svelteKeyword'
+" lang="..." in double or single quotes or without quotes
+function! s:Lang(syntax)
+  return 'lang=["'']\?'.get(s:lang_names, a:syntax, a:syntax).'\>["'']\?'
+endfunction
 
-execute 'syntax region cssLessSvelteStyle fold'
-      \ 'start=+<style[^>]*'.s:Lang('less', s:use_less).'[^>]*>+'
-      \ 'end=+</style>+'
-      \ 'keepend contains=@LessSyntax,svelteTag'
-" SugarSS (lang="sss") is indent-based like sass
-execute 'syntax region cssSassSvelteStyle fold'
-      \ 'start=+<style[^>]*'.s:Lang('\(sass\|sss\)', s:use_sass).'[^>]*>+'
-      \ 'end=+</style>+'
-      \ 'keepend contains=@SassSyntax,svelteTag'
-execute 'syntax region cssScssSvelteStyle fold'
-      \ 'start=+<style[^>]*'.s:Lang('scss', s:use_sass).'[^>]*>+'
-      \ 'end=+</style>+'
-      \ 'keepend contains=@SassSyntax,svelteTag'
-execute 'syntax region cssStylusSvelteStyle fold'
-      \ 'start=+<style[^>]*'.s:Lang('stylus', s:use_stylus).'[^>]*>+'
-      \ 'end=+</style>+'
-      \ 'keepend contains=@StylusSyntax,svelteTag'
+function! s:SetBlock(name, tag, lang, contains)
+  execute 'syntax region '.a:name.' fold'
+        \ 'start=+<'.a:tag.'[^>]*'.a:lang.'[^>]*>+'
+        \ 'end=+</'.a:tag.'>+'
+        \ 'keepend contains='.a:contains
+endfunction
+
+" Without lang, the first syntax in config
+for s:tag in ['script', 'style']
+  let s:syntax = get(s:config_syntax[s:tag], 0,
+        \ s:tag ==# 'script' ? 'javascript' : 'css')
+  call s:SetBlock(s:GetName(s:syntax, s:tag), s:tag, '',
+        \ s:GetContains(s:syntax))
+endfor
+
+for s:tag in ['template', 'script', 'style']
+  for s:syntax in get(s:config_syntax, s:tag, [])
+    if s:tag ==# 'template' && s:syntax ==# 'html'
+      continue
+    endif
+    call s:SetBlock(s:GetName(s:syntax, s:tag), s:tag, s:Lang(s:syntax),
+          \ s:GetContains(s:syntax))
+  endfor
+endfor
+
+" Languages supported before g:vim_svelte_plugin_config. If not in config,
+" TypeScript is highlighted as the first syntax of script, others in
+" lang="..." have their block without syntax as before
+if !svelte#Has(s:config_syntax.script, 'typescript')
+  let s:syntax = get(s:config_syntax.script, 0, 'javascript')
+  call s:SetBlock('typescriptSvelteScript', 'script', s:Lang('typescript'),
+        \ s:GetContains(s:syntax))
+endif
+for [s:tag, s:syntax] in [['template', 'pug'], ['script', 'coffee'],
+      \ ['style', 'less'], ['style', 'sass'], ['style', 'scss'],
+      \ ['style', 'stylus']]
+  if !svelte#Has(s:syntax_list, s:syntax)
+    call s:SetBlock(s:GetName(s:syntax, s:tag), s:tag,
+          \ 'lang="'.get(s:lang_names, s:syntax, s:syntax).'"',
+          \ s:GetContains(s:syntax))
+  endif
+endfor
 
 syntax region svelteTag 
       \ start=+^<[^/]+ end=+>+  skip=+></+
@@ -264,7 +289,7 @@ endif
 " Style
 " Redefine (less|sass)Definition to highlight <style> correctly and 
 " enable emmet-vim css type.
-if s:use_less
+if svelte#Has(s:syntax_list, 'less')
   silent! syntax clear lessDefinition
   syntax region cssLessDefinition matchgroup=cssBraces 
         \ contains=@LessSyntax,cssLessDefinition
@@ -272,7 +297,7 @@ if s:use_less
         \ start="{" end="}" 
 endif
 
-if s:use_sass
+if svelte#Has(s:syntax_list, 'sass') || svelte#Has(s:syntax_list, 'scss')
   silent! syntax clear sassDefinition
   syntax region cssSassDefinition matchgroup=cssBraces 
         \ contains=@SassSyntax,cssSassDefinition
@@ -280,7 +305,7 @@ if s:use_sass
         \ start="{" end="}" 
 endif
 
-if s:use_stylus
+if svelte#Has(s:syntax_list, 'stylus')
   silent! syntax clear stylusDefinition
   syntax region cssStylusDefinition matchgroup=cssBraces 
         \ contains=@StylusSyntax,cssStylusDefinition

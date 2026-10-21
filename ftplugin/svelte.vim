@@ -60,7 +60,7 @@ function! s:OpenDevDocs() range
   execute 'Open https://devdocs.io?q='.filetype.' '.clean_text
 endfunction
 
-let s:open_devdocs = svelte#GetConfig('open_devdocs', '<F1>')
+let s:open_devdocs = svelte#GetSvelteConfig().open_devdocs
 if !empty(s:open_devdocs)
   if has('patch-8.2.1978') || has('nvim-0.5')
     execute 'nnoremap <buffer> '.s:open_devdocs.' <Cmd>call <SID>OpenDevDocs()<CR>'

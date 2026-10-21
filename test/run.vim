@@ -91,6 +91,26 @@ function! ExpectTag(lnum, tag)
   endif
 endfunction
 
+" Call GetSvelteIndent() for each non-blank line from line 2 as when typing
+" it, which shows errors hidden by 'indentexpr', and check the indent. -1
+" keeps the indent
+function! ExpectIndentEachLine()
+  for lnum in range(2, line('$'))
+    if getline(lnum) =~ '^\s*$'
+      continue
+    endif
+    call cursor(lnum, 1)
+    let v:lnum = lnum
+    try
+      let ind = GetSvelteIndent()
+      call ExpectEqual(ind == -1 ? indent(lnum) : ind, indent(lnum),
+            \ printf('GetSvelteIndent() at line %d', lnum))
+    catch
+      call Fail(printf('GetSvelteIndent() at line %d: %s', lnum, v:exception))
+    endtry
+  endfor
+endfunction
+
 if filereadable(s:case.'.vim')
   execute 'source '.fnameescape(s:case.'.vim')
 endif

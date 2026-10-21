@@ -37,13 +37,9 @@ let s:oneline_block = '^\s*{#.*{/.*}\s*$'
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:use_pug = svelte#GetConfig('use_pug', 0)
-let s:use_sass = svelte#GetConfig('use_sass', 0)
-let s:use_coffee = svelte#GetConfig('use_coffee', 0)
-let s:use_stylus = svelte#GetConfig('use_stylus', 0)
-let s:use_typescript = svelte#GetConfig('use_typescript', 0)
-let s:has_init_indent = svelte#GetConfig('has_init_indent', 1)
-let s:debug = svelte#GetConfig('debug', 0)
+let s:config = svelte#GetSvelteConfig()
+let s:initial_indent = s:config.initial_indent
+let s:debug = s:config.debug
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -66,32 +62,21 @@ unlet! b:did_indent
 runtime! indent/javascript.vim
 let b:javascript_indentexpr = &indentexpr
 
-if s:use_pug
+" Indent files of syntax in config. Syntax with an empty value, like pug
+" not in config, keeps indent as its indent file isn't loaded. css, less,
+" scss use GetCSSIndent()
+let s:indent = {'pug': '', 'coffee': '', 'sass': '', 'stylus': ''}
+let s:save_formatoptions = &formatoptions
+for s:syntax in svelte#GetSyntaxList(s:config.syntax)
+  if index(['html', 'css', 'javascript', 'less', 'scss'], s:syntax) != -1
+    continue
+  endif
   unlet! b:did_indent
-  let s:save_formatoptions = &formatoptions
-  runtime! indent/pug.vim
-  let &formatoptions = s:save_formatoptions
-endif
-
-if s:use_stylus
-  unlet! b:did_indent
-  runtime! indent/stylus.vim
-endif
-
-if s:use_sass
-  unlet! b:did_indent
-  runtime! indent/sass.vim
-endif
-
-if s:use_coffee
-  unlet! b:did_indent
-  runtime! indent/coffee.vim
-endif
-
-if s:use_typescript
-  unlet! b:did_indent
-  runtime! indent/typescript.vim
-endif
+  let &l:indentexpr = ''
+  execute 'runtime! indent/'.s:syntax.'.vim'
+  let s:indent[s:syntax] = &l:indentexpr
+endfor
+let &formatoptions = s:save_formatoptions
 
 " Recover shiftwidth
 let &sw = s:sw
@@ -122,6 +107,8 @@ function! GetSvelteIndent()
   let curline = getline(v:lnum)
   let cursyns = s:SynsSOL(v:lnum)
   let cursyn = get(cursyns, 0, '')
+  let [tag, syntax] = s:BlockTagAndSyntax(cursyn)
+  let keep = 0
 
   if s:IsMultipleLineTemplateString(curline, cursyns)
     call s:Log('current line is multiline template string expression')
@@ -163,22 +150,16 @@ function! GetSvelteIndent()
         let ind = indent(v:lnum - 1)
       endif
     endif
-  elseif s:SynPug(cursyn)
-    call s:Log('syntax: pug')
-    let ind = GetPugIndent()
-  elseif s:SynCoffee(cursyn)
-    call s:Log('syntax: coffee')
-    let ind = GetCoffeeIndent(v:lnum)
-  elseif s:use_typescript && s:SynTypeScript(cursyn)
-    call s:Log('syntax: typescript')
-    let ind = GetTypescriptIndent()
-  elseif s:SynSASS(cursyn)
-    call s:Log('syntax: sass')
-    let ind = GetSassIndent()
-  elseif s:SynStylus(cursyn)
-    call s:Log('syntax: stylus')
-    let ind = GetStylusIndent()
-  elseif s:SynStyle(cursyn)
+  elseif has_key(s:indent, syntax)
+    call s:Log('syntax: '.syntax)
+    if empty(s:indent[syntax])
+      call s:Log('no indent for '.syntax.', keep indent')
+      let keep = 1
+      let ind = indent(v:lnum)
+    else
+      let ind = eval(s:indent[syntax])
+    endif
+  elseif tag ==# 'style'
     call s:Log('syntax: style')
     let ind = GetCSSIndent()
   elseif s:IsTagStart(curline)
@@ -199,8 +180,10 @@ function! GetSvelteIndent()
     call s:Log('current line is svelte tag or previous line is svelte tag end')
     call s:Log('... or current line is pug template tag')
     let ind = 0
-  elseif s:has_init_indent
-    if s:SynSvelteScriptOrStyle(cursyn) && ind == 0
+  elseif keep
+    return ind
+  elseif s:HasInitialIndent(tag, syntax)
+    if ind == 0
       call s:Log('add initial indent')
       let ind = shiftwidth()
     endif
@@ -298,28 +281,25 @@ function! s:SynPug(syn)
   return a:syn ==? 'pugSvelteTemplate'
 endfunction
 
-function! s:SynCoffee(syn)
-  return a:syn ==? 'coffeeSvelteScript'
+" Block tag and syntax by syntax name like javascriptSvelteScript and
+" cssScssSvelteStyle, or ['', ''] if not in a block
+function! s:BlockTagAndSyntax(syn)
+  let parts = matchlist(a:syn, '\v^(\w{-})Svelte(Script|Style|Template)$')
+  if empty(parts)
+    return ['', '']
+  endif
+  let syntax = parts[1]
+  if syntax =~# '^css\u'
+    let syntax = tolower(syntax[3]).syntax[4:]
+  endif
+  return [tolower(parts[2]), syntax]
 endfunction
 
-function! s:SynTypeScript(syn)
-  return a:syn ==? 'typescriptSvelteScript'
-endfunction
-
-function! s:SynStylus(syn)
-  return a:syn ==? 'cssStylusSvelteStyle'
-endfunction
-
-function! s:SynSASS(syn)
-  return a:syn ==? 'cssSassSvelteStyle'
-endfunction
-
-function! s:SynStyle(syn)
-  return a:syn =~? 'SvelteStyle'
-endfunction
-
-function! s:SynSvelteScriptOrStyle(syn)
-  return a:syn =~? '\v(SvelteStyle)|(SvelteScript)'
+" By tag, syntax or tag.syntax in initial_indent
+function! s:HasInitialIndent(tag, syntax)
+  return !empty(a:tag) && (svelte#Has(s:initial_indent, a:tag)
+        \ || svelte#Has(s:initial_indent, a:syntax)
+        \ || svelte#Has(s:initial_indent, a:tag.'.'.a:syntax))
 endfunction
 
 function! s:PrevMultilineEmptyTag(lnum)
