@@ -3,6 +3,7 @@
 # vim-svelte-plugin
 
 [![test](https://github.com/leafOfTree/vim-svelte-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/leafOfTree/vim-svelte-plugin/actions/workflows/test.yml)
+
 <p align="center">
 <a href="https://github.com/altercation/vim-colors-solarized">
 <img alt="screenshot" src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-solarized.png" width="220" />
@@ -41,7 +42,7 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 <br />
 </details>
 
-This plugin works if it has set `filetype` to `svelte`. Please stay up to date. Feel free to open an issue or pull request.
+The filetype is set to `svelte` for `.svelte` files. It's tested with Vim 8.2+ and Neovim 0.9+. Feel free to open an issue or pull request.
 
 See `:help vim-svelte-plugin` for the documentation in Vim.
 
@@ -51,12 +52,13 @@ It combines HTML, CSS and JavaScript syntax and indent in one file.
 
 Supports
 
-- Svelte directives.
+- Svelte syntax: directives like `on:click` and `bind:value`, blocks like `{#if}`, `{#each}`, `{#await}` and Svelte 5 `{#snippet}`, and tags like `{@html}`, `{@render}` and `{@const}`.
 - Blocks with any syntax by `lang="..."`, like TypeScript, Less/Sass/Scss, Stylus, Pug with [vim-pug][4] and Coffee with [vim-coffee-script][6].^
 
     Relative plugins need to be installed if not provided by Vim.
 
 - A builtin `foldexpr` foldmethod.^
+- Functions to get the current tag or syntax, see [Context based behavior](#context-based-behavior).
 - [emmet-vim][10] HTML/CSS/JavaScript filetype detection.
 
 ^: see Configuration for details.
@@ -150,7 +152,7 @@ As there are more than one language in `.svelte` file, the different behaviors l
 
 This plugin provides functions to get the tag/subtype where the cursor is in.
 
-- **GetSvelteTag() => String**: Return value is one of `'template', 'script', 'style'`.
+- **GetSvelteTag([lnum]) => String**: Return value is one of `'template', 'script', 'style'`, or `''`, at line `lnum` or the cursor line.
 
   ```vim
   " Example
@@ -192,7 +194,7 @@ Currently emmet-vim works regarding your HTML/CSS/JavaScript emmet settings, but
 
 Since there are many sub languages included, most delays come from syntax files overload. A variable named `b:current_loading_main_syntax` is set to `svelte` which can be used as loading condition if you'd like to manually find and modify the syntax files causing overload.
 
-For example, the builtin syntax `sass.vim` and `less.vim` in vim8.1 runtime always load `css.vim` which this plugin already loads. It can be optimized like
+For example, the builtin syntax `sass.vim` and `less.vim` in Vim runtime always load `css.vim` which this plugin already loads. It can be optimized like
 
 ```diff
 - runtime! syntax/css.vim
@@ -209,6 +211,7 @@ Run tests with Vim and Neovim, whichever is installed
 ./test/run.sh
 ./test/run.sh basic template  # Only these cases
 SVELTE_TEST_EDITORS=nvim ./test/run.sh  # Only Neovim
+./test/shared.sh  # Compare shared-* cases with vim-vue-plugin
 ```
 
 Each case is a `.svelte` file in [test/cases](test/cases), with an optional `.vim` file for the config and checks. A case fails if
