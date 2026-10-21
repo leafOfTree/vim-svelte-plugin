@@ -1,6 +1,8 @@
 <img src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-plugin-icon.svg" width="60" alt="icon" align="left"/>
 
 # vim-svelte-plugin
+
+[![test](https://github.com/leafOfTree/vim-svelte-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/leafOfTree/vim-svelte-plugin/actions/workflows/test.yml)
 <p align="center">
 <a href="https://github.com/altercation/vim-colors-solarized">
 <img alt="screenshot" src="https://raw.githubusercontent.com/leafOfTree/leafOfTree.github.io/master/vim-svelte-solarized.png" width="220" />
@@ -75,6 +77,7 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 | g:vim_svelte_plugin_has_init_indent    | Initially indent one tab inside `style/script` tags.                                                                                                                        | 1       |
 | g:vim_svelte_plugin_use_foldexpr       | Enable builtin `foldexpr` foldmethod.                                                                                                                                       | 0       |
 | g:vim_svelte_plugin_debug              | Echo debug messages in `messages` list. Useful to debug if unexpected indents occur.                                                                                        | 0       |
+| g:vim_svelte_plugin_highlight_svelte_attr | Highlight the key of svelte attributes like `on:click` and `bind:value` as `Type`, and their value `{...}` as normal text instead of string. | 0       |
 | g:vim_svelte_plugin_open_devdocs       | Key mapping to search documentation on https://devdocs.io for the word under the cursor or selected | `<F1>`       |
 
 \*: Vim may be slow if the feature is enabled. Find a balance between syntax highlight and speed. By the way, custom syntax can be added in `~/.vim/syntax` or `$VIM/vimfiles/syntax`.
@@ -83,11 +86,11 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 
 - `filetype` is set to `svelte` so autocmds and other custom settings for `javascript` have to be manually enabled for `svelte`.
 - `g:vim_svelte_plugin_load_full_syntax` applies to `HTML/Sass/Less`.
-- See <https://svelte.dev/docs#svelte_preprocess> for how to use `Less/Sass/Pug`... in svelte.
+- See <https://svelte.dev/docs/svelte/svelte-compiler#preprocess> for how to use `Less/Sass/Pug`... in svelte.
 
-### Neovim & [Treesiter](https://github.com/nvim-treesitter/nvim-treesitter)
+### Neovim & [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 
-For css syntax highlighting you will need the css language parser for [Treesiter](https://github.com/nvim-treesitter/nvim-treesitter). You can install it like so:
+For css syntax highlighting you will need the css language parser for [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter). You can install it like so:
 
 ```
 :TSInstall css
@@ -176,7 +179,7 @@ Tests also run on GitHub Actions for each push and pull request.
 
 ## License
 
-This plugin is under [The Unlicense][8]. Other than this, `lib/indent/*` files are extracted from vim runtime.
+This plugin is under [The Unlicense][8]. Other than this, `indent/svelte-xml.vim` and `indent/svelte-css.vim` are extracted from vim runtime.
 
 [1]: https://github.com/mxw/vim-jsx "mxw: vim-jsx"
 [2]: https://github.com/VundleVim/Vundle.vim
@@ -188,6 +191,5 @@ This plugin is under [The Unlicense][8]. Other than this, `lib/indent/*` files a
 [8]: https://choosealicense.com/licenses/unlicense/
 [10]: https://github.com/mattn/emmet-vim
 [11]: https://github.com/leafOfTree/vim-svelte-theme
-[12]: https://travis-ci.com/leafOfTree/vim-svelte-plugin.svg?branch=master
 [14]: https://github.com/leafgarland/typescript-vim
 [15]: https://github.com/HerringtonDarkholme/yats.vim
