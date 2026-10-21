@@ -188,47 +188,50 @@ syntax region cssSvelteStyle fold
       \ keepend contains=@htmlCss,svelteTag
 
 " Preprocessors syntax
-syntax region pugSvelteTemplate fold
-      \ start=+<template[^>]*lang="pug"[^>]*>+
-      \ end=+</template>+
-      \ keepend contains=@PugSyntax,svelteTag
+" lang="..." in double quotes, also in single quotes or without quotes if the
+" language is enabled. Otherwise those stay in the default language as before
+function! s:Lang(lang, enabled)
+  return a:enabled
+        \ ? 'lang=["'']\?'.a:lang.'\>["'']\?'
+        \ : 'lang="'.a:lang.'"'
+endfunction
 
-syntax region coffeeSvelteScript fold 
-      \ start=+<script[^>]*lang="coffee"[^>]*>+
-      \ end=+</script>+
-      \ keepend contains=@htmlCoffeeScript,jsImport,jsExport,svelteTag
+execute 'syntax region pugSvelteTemplate fold'
+      \ 'start=+<template[^>]*'.s:Lang('pug', s:use_pug).'[^>]*>+'
+      \ 'end=+</template>+'
+      \ 'keepend contains=@PugSyntax,svelteTag'
+
+execute 'syntax region coffeeSvelteScript fold'
+      \ 'start=+<script[^>]*'.s:Lang('coffee', s:use_coffee).'[^>]*>+'
+      \ 'end=+</script>+'
+      \ 'keepend contains=@htmlCoffeeScript,jsImport,jsExport,svelteTag'
 
 " Without TypeScript syntax enabled, highlight it as JavaScript
-if s:use_typescript
-  syntax region typescriptSvelteScript fold
-        \ start=+<script[^>]*lang="\(ts\|typescript\)"[^>]*>+
-        \ end=+</script>+
-        \ keepend contains=@TypeScript,svelteTag
-else
-  syntax region typescriptSvelteScript fold
-        \ start=+<script[^>]*lang="\(ts\|typescript\)"[^>]*>+
-        \ end=+</script>+
-        \ keepend
-        \ contains=@htmlJavaScript,jsImport,jsExport,svelteTag,svelteKeyword
-endif
+execute 'syntax region typescriptSvelteScript fold'
+      \ 'start=+<script[^>]*'.s:Lang('\(ts\|typescript\)', 1).'[^>]*>+'
+      \ 'end=+</script>+'
+      \ 'keepend'
+      \ s:use_typescript
+      \ ? 'contains=@TypeScript,svelteTag'
+      \ : 'contains=@htmlJavaScript,jsImport,jsExport,svelteTag,svelteKeyword'
 
-syntax region cssLessSvelteStyle fold
-      \ start=+<style[^>]*lang="less"[^>]*>+ 
-      \ end=+</style>+ 
-      \ keepend contains=@LessSyntax,svelteTag
+execute 'syntax region cssLessSvelteStyle fold'
+      \ 'start=+<style[^>]*'.s:Lang('less', s:use_less).'[^>]*>+'
+      \ 'end=+</style>+'
+      \ 'keepend contains=@LessSyntax,svelteTag'
 " SugarSS (lang="sss") is indent-based like sass
-syntax region cssSassSvelteStyle fold
-      \ start=+<style[^>]*lang="\(sass\|sss\)"[^>]*>+ 
-      \ end=+</style>+ 
-      \ keepend contains=@SassSyntax,svelteTag
-syntax region cssScssSvelteStyle fold
-      \ start=+<style[^>]*lang="scss"[^>]*>+ 
-      \ end=+</style>+ 
-      \ keepend contains=@SassSyntax,svelteTag
-syntax region cssStylusSvelteStyle fold
-      \ start=+<style[^>]*lang="stylus"[^>]*>+ 
-      \ end=+</style>+ 
-      \ keepend contains=@StylusSyntax,svelteTag
+execute 'syntax region cssSassSvelteStyle fold'
+      \ 'start=+<style[^>]*'.s:Lang('\(sass\|sss\)', s:use_sass).'[^>]*>+'
+      \ 'end=+</style>+'
+      \ 'keepend contains=@SassSyntax,svelteTag'
+execute 'syntax region cssScssSvelteStyle fold'
+      \ 'start=+<style[^>]*'.s:Lang('scss', s:use_sass).'[^>]*>+'
+      \ 'end=+</style>+'
+      \ 'keepend contains=@SassSyntax,svelteTag'
+execute 'syntax region cssStylusSvelteStyle fold'
+      \ 'start=+<style[^>]*'.s:Lang('stylus', s:use_stylus).'[^>]*>+'
+      \ 'end=+</style>+'
+      \ 'keepend contains=@StylusSyntax,svelteTag'
 
 syntax region svelteTag 
       \ start=+^<[^/]+ end=+>+  skip=+></+
