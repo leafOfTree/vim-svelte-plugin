@@ -162,6 +162,7 @@ Run tests with Vim and Neovim, whichever is installed
 ```sh
 ./test/run.sh
 ./test/run.sh basic template  # Only these cases
+SVELTE_TEST_EDITORS=nvim ./test/run.sh  # Only Neovim
 ```
 
 Each case is a `.svelte` file in [test/cases](test/cases), with an optional `.vim` file for the config and checks. A case fails if
@@ -171,7 +172,7 @@ Each case is a `.svelte` file in [test/cases](test/cases), with an optional `.vi
 - a check in `Check()` fails, such as syntax, `GetSvelteTag()`, `GetSvelteSubtype()` or fold level
 - there is an error message
 
-Tests also run on GitHub Actions for each push and pull request.
+Tests also run on GitHub Actions for each push and pull request, with Vim 8.2.0000, the latest Vim, Neovim 0.9.5 and the latest Neovim.
 
 ## See also
 
