@@ -23,7 +23,10 @@ let s:svelte_tag_end = '\v^\<\/(script|style)'
 let s:template_tag = '\v^\s*\<\/?template'
 " https://developer.mozilla.org/en-US/docs/Glossary/Empty_element
 let s:empty_tagname = '(area|base|br|col|embed|hr|input|img|keygen|link|meta|param|source|track|wbr)'
-let s:empty_tag = '\v\C\<'.s:empty_tagname.'[^/]*\>' 
+" Empty tag ending with '>' but not '/>'. '>' in {...} like {(e) => f(e)} or
+" in quotes doesn't end the tag
+let s:empty_tag = '\v\C\<'.s:empty_tagname
+      \ .'>(\{[^}]*\}|"[^"]*"|''[^'']*''|[^\>{"''/]|/(\>)@!)*\>'
 let s:empty_tag_start = '\v\<'.s:empty_tagname.'[^\>]*$' 
 let s:empty_tag_end = '\v^\s*[^\<\>\/]*\>\s*' 
 let s:tag_start = '^<$'
