@@ -3,8 +3,7 @@
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:use_foldexpr = exists("g:vim_svelte_plugin_use_foldexpr") 
-      \ && g:vim_svelte_plugin_use_foldexpr == 1
+let s:use_foldexpr = svelte#GetSvelteConfig().foldexpr
 "}}}
 
 if !s:use_foldexpr | finish | endif

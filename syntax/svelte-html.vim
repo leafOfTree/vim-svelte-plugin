@@ -3,7 +3,7 @@
 " Config {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:highlight_svelte_attr = svelte#GetConfig('highlight_svelte_attr', 0)
+let s:highlight_svelte_attr = svelte#GetSvelteConfig().attribute
 ")}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
