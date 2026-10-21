@@ -220,6 +220,8 @@ Each case is a `.svelte` file in [test/cases](test/cases), with an optional `.vi
 
 Tests also run on GitHub Actions for each push and pull request, with Vim 8.2.0000, the latest Vim, Neovim 0.9.5 and the latest Neovim.
 
+Cases named `shared-*` are for scenarios also in [vim-vue-plugin][3], which handles blocks in the same way. `./test/shared.sh` lists shared cases in only one of them, as a warning on GitHub Actions, so a fix in one plugin can be checked in the other.
+
 ## See also
 
 - [vim-svelte-theme][11] svelte syntax color
