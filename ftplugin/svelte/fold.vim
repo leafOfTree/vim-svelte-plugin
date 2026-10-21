@@ -16,6 +16,8 @@ if !s:use_foldexpr | finish | endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 setlocal foldmethod=expr
 setlocal foldexpr=GetSvelteFold(v:lnum)
+let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin.' | ' : '')
+      \ . 'setlocal foldmethod< foldexpr<'
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -24,7 +26,6 @@ setlocal foldexpr=GetSvelteFold(v:lnum)
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:empty_line = '\v^\s*$'
-let s:block_end = '\v^\s*}|]|\)'
 let s:svelte_tag_start = '\v^\<\w+' 
 let s:svelte_tag_end = '\v^\<\/\w+' 
 let s:svelte_internal_blocks = '\v:(else|then|catch)'
@@ -51,7 +52,6 @@ let s:svelte_internal_blocks = '\v:(else|then|catch)'
 "  "<1", "<2", ..	a fold with this level ends at this line
 function! GetSvelteFold(lnum)
   let this_line = getline(a:lnum)
-  let next_line = getline(a:lnum + 1)
 
   " Handle empty lines
   if this_line =~ s:empty_line
@@ -106,7 +106,7 @@ endfunction
 
 function! s:IndentLevel(lnum)
   " Add 1 to indentLevel, so start/end tags can fold properly
-  return indent(a:lnum) / &shiftwidth + 1
+  return indent(a:lnum) / shiftwidth() + 1
 endfunction
 
 function! s:NextNonBlankLine(lnum)

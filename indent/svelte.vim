@@ -28,6 +28,7 @@ let s:empty_tag_start = '\v\<'.s:empty_tagname.'[^\>]*$'
 let s:empty_tag_end = '\v^\s*[^\<\>\/]*\>\s*' 
 let s:tag_start = '^<$'
 let s:tag_end = '\v^\s*\/?\>\s*'
+let s:multiline_tag_start = '\v^\s*\<[-:.a-zA-Z0-9]+[^>]*$'
 let s:oneline_block = '^\s*{#.*{/.*}\s*$'
 "}}}
 
@@ -125,7 +126,7 @@ function! GetSvelteIndent()
   if s:IsMultipleLineTemplateString(curline, cursyns)
     call s:Log('current line is multiline template string expression')
     if !s:IsMultipleLineTemplateString(prevline, prevsyns)
-      let ind = indent(v:lnum - 1) + &sw
+      let ind = indent(v:lnum - 1) + shiftwidth()
     else
       let ind = indent(v:lnum - 1)
     endif
@@ -134,26 +135,26 @@ function! GetSvelteIndent()
     let ind = XmlIndentGet(v:lnum, 0)
     if prevline =~? s:empty_tag
       call s:Log('previous line is empty tag')
-      let ind = ind - &sw
+      let ind = ind - shiftwidth()
     endif
 
     if s:IsBlockStart(prevsyns) && prevline !~ s:oneline_block
       call s:Log('increase block indent')
-      let ind = ind + &sw
+      let ind = ind + shiftwidth()
     endif
 
     if s:IsBlockEnd(cursyns, curline)
       call s:Log('decrease block indent')
-      let ind = ind - &sw
+      let ind = ind - shiftwidth()
     endif
 
     " Align '/>' and '>' with '<' for multiline tags.
     if curline =~? s:tag_end 
-      let ind = ind - &sw
+      let ind = ind - shiftwidth()
     endif
     " Then correct the indentation of any element following '/>' or '>'.
     if prevline =~? s:tag_end
-      let ind = ind + &sw
+      let ind = ind + shiftwidth()
 
       "Decrease indent if prevlines are a multiline empty tag
       let [start, end] = s:PrevMultilineEmptyTag(v:lnum)
@@ -168,7 +169,7 @@ function! GetSvelteIndent()
   elseif s:SynCoffee(cursyn)
     call s:Log('syntax: coffee')
     let ind = GetCoffeeIndent(v:lnum)
-  elseif s:SynTypeScript(cursyn)
+  elseif s:use_typescript && s:SynTypeScript(cursyn)
     call s:Log('syntax: typescript')
     let ind = GetTypescriptIndent()
   elseif s:SynSASS(cursyn)
@@ -201,7 +202,7 @@ function! GetSvelteIndent()
   elseif s:has_init_indent
     if s:SynSvelteScriptOrStyle(cursyn) && ind == 0
       call s:Log('add initial indent')
-      let ind = &sw
+      let ind = shiftwidth()
     endif
   elseif prevline =~? s:svelte_tag_start
     call s:Log('previous line is svelte tag start')
@@ -330,7 +331,7 @@ function! s:PrevMultilineEmptyTag(lnum)
       let lnums[1] = lnum
     endif
 
-    if line =~? s:tag_start
+    if line =~? s:multiline_tag_start
       if line =~? s:empty_tag_start
         let lnums[0] = lnum
         return lnums
@@ -341,6 +342,7 @@ function! s:PrevMultilineEmptyTag(lnum)
 
     let lnum = lnum - 1
   endwhile
+  return [0, 0]
 endfunction
 
 function! s:Log(msg)

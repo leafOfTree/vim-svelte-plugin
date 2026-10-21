@@ -1,7 +1,3 @@
-let s:name = 'vim-svelte-plugin'
-let s:debug = exists("g:vim_svelte_plugin_debug")
-      \ && g:vim_svelte_plugin_debug == 1
-
 function! svelte#GetConfig(name, default)
   let name = 'g:vim_svelte_plugin_'.a:name
   return exists(name) ? eval(name) : a:default

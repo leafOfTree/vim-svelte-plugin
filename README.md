@@ -43,6 +43,8 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 
 This plugin works if it has set `filetype` to `svelte`. Please stay up to date. Feel free to open an issue or pull request.
 
+See `:help vim-svelte-plugin` for the documentation in Vim.
+
 ## How it works
 
 It combines HTML, CSS and JavaScript syntax and indent in one file.
@@ -70,7 +72,7 @@ Set global variable to `1` to enable or `0` to disable. Ex:
 | g:vim_svelte_plugin_load_full_syntax \* | Enable: load all syntax files in `runtimepath` to enable related syntax plugins.<br> Disable: only in `$VIMRUNTIME/syntax`, `~/.vim/syntax` and `$VIM/vimfiles/syntax` | 0       |
 | g:vim_svelte_plugin_use_pug \*          | Enable pug syntax for `<template lang="pug">`.                                                                                                                              | 0       |
 | g:vim_svelte_plugin_use_coffee         | Enable coffee syntax for `<script lang="coffee">`.                                                                                                                          | 0       |
-| g:vim_svelte_plugin_use_typescript     | Enable typescript syntax for `<script lang="ts">`.                                                                                                                          | 0       |
+| g:vim_svelte_plugin_use_typescript     | Enable typescript syntax for `<script lang="ts">`. If disabled, it is highlighted and indented as JavaScript.                                                               | 0       |
 | g:vim_svelte_plugin_use_less           | Enable less syntax for `<style lang="less">`.                                                                                                                               | 0       |
 | g:vim_svelte_plugin_use_sass           | Enable scss syntax for `<style lang="scss">`(or sass for `lang="sass"` and SugarSS `lang="sss"`).                                                                        | 0       |
 | g:vim_svelte_plugin_use_stylus           | Enable stylus syntax for `<style lang="stylus">`.                                                                                                                               | 0       |
@@ -160,6 +162,7 @@ Run tests with Vim and Neovim, whichever is installed
 ```sh
 ./test/run.sh
 ./test/run.sh basic template  # Only these cases
+SVELTE_TEST_EDITORS=nvim ./test/run.sh  # Only Neovim
 ```
 
 Each case is a `.svelte` file in [test/cases](test/cases), with an optional `.vim` file for the config and checks. A case fails if
@@ -169,7 +172,7 @@ Each case is a `.svelte` file in [test/cases](test/cases), with an optional `.vi
 - a check in `Check()` fails, such as syntax, `GetSvelteTag()`, `GetSvelteSubtype()` or fold level
 - there is an error message
 
-Tests also run on GitHub Actions for each push and pull request.
+Tests also run on GitHub Actions for each push and pull request, with Vim 8.2.0000, the latest Vim, Neovim 0.9.5 and the latest Neovim.
 
 ## See also
 
