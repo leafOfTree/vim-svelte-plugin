@@ -43,6 +43,8 @@ Vim syntax and indent plugin for `.svelte` files. Forked from [vim-vue-plugin][3
 
 This plugin works if it has set `filetype` to `svelte`. Please stay up to date. Feel free to open an issue or pull request.
 
+See `:help vim-svelte-plugin` for the documentation in Vim.
+
 ## How it works
 
 It combines HTML, CSS and JavaScript syntax and indent in one file.
