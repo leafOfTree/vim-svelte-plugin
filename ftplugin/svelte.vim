@@ -32,17 +32,14 @@ endif
 
 if !exists(':Open')
   function! s:Open(arg)
-    let cmd = ''
-    if has('mac')
-      let cmd = 'open'
-    endif
-    if has('linux')
-      let cmd = 'xdg-open'
-    endif
     if has('win32')
       let cmd = 'start'
+    elseif has('mac') || has('macunix')
+      let cmd = 'open'
+    else
+      let cmd = 'xdg-open'
     endif
-  
+
     execute '!'.cmd.' "'.a:arg.'"'
   endfunction
 
@@ -56,8 +53,8 @@ function! s:OpenDevDocs() range
     let text = expand('<cword>')
   endif
   
-  " Remove special symbols
-  let clean_text = substitute(text, '[#@$%^&*(){}[\]<>]', '', 'g')
+  " Remove special symbols, also '!', '%' and '#' expanded by :!
+  let clean_text = substitute(text, '[!#@$%^&*(){}[\]<>]', '', 'g')
   
   let filetype = &filetype
   execute 'Open https://devdocs.io?q='.filetype.' '.clean_text
@@ -65,6 +62,14 @@ endfunction
 
 let s:open_devdocs = svelte#GetConfig('open_devdocs', '<F1>')
 if !empty(s:open_devdocs)
-  execute 'noremap <buffer> '.s:open_devdocs.' <Cmd>call <SID>OpenDevDocs()<CR>'
-  let b:undo_ftplugin .= " | exe 'unmap <buffer> ".s:open_devdocs."'"
+  if has('patch-8.2.1978') || has('nvim-0.5')
+    execute 'nnoremap <buffer> '.s:open_devdocs.' <Cmd>call <SID>OpenDevDocs()<CR>'
+    execute 'xnoremap <buffer> '.s:open_devdocs.' <Cmd>call <SID>OpenDevDocs()<CR>'
+    let b:undo_ftplugin .= " | exe 'nunmap <buffer> ".s:open_devdocs."'"
+          \ . " | exe 'xunmap <buffer> ".s:open_devdocs."'"
+  else
+    " No <Cmd> in older Vim, only for the word under the cursor
+    execute 'nnoremap <buffer> '.s:open_devdocs.' :<C-u>call <SID>OpenDevDocs()<CR>'
+    let b:undo_ftplugin .= " | exe 'nunmap <buffer> ".s:open_devdocs."'"
+  endif
 endif
