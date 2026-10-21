@@ -198,10 +198,19 @@ syntax region coffeeSvelteScript fold
       \ end=+</script>+
       \ keepend contains=@htmlCoffeeScript,jsImport,jsExport,svelteTag
 
-syntax region typescriptSvelteScript fold
-      \ start=+<script[^>]*lang="\(ts\|typescript\)"[^>]*>+
-      \ end=+</script>+
-      \ keepend contains=@TypeScript,svelteTag
+" Without TypeScript syntax enabled, highlight it as JavaScript
+if s:use_typescript
+  syntax region typescriptSvelteScript fold
+        \ start=+<script[^>]*lang="\(ts\|typescript\)"[^>]*>+
+        \ end=+</script>+
+        \ keepend contains=@TypeScript,svelteTag
+else
+  syntax region typescriptSvelteScript fold
+        \ start=+<script[^>]*lang="\(ts\|typescript\)"[^>]*>+
+        \ end=+</script>+
+        \ keepend
+        \ contains=@htmlJavaScript,jsImport,jsExport,svelteTag,svelteKeyword
+endif
 
 syntax region cssLessSvelteStyle fold
       \ start=+<style[^>]*lang="less"[^>]*>+ 
