@@ -28,6 +28,7 @@ let s:empty_tag_start = '\v\<'.s:empty_tagname.'[^\>]*$'
 let s:empty_tag_end = '\v^\s*[^\<\>\/]*\>\s*' 
 let s:tag_start = '^<$'
 let s:tag_end = '\v^\s*\/?\>\s*'
+let s:multiline_tag_start = '\v^\s*\<[-:.a-zA-Z0-9]+[^>]*$'
 let s:oneline_block = '^\s*{#.*{/.*}\s*$'
 "}}}
 
@@ -330,7 +331,7 @@ function! s:PrevMultilineEmptyTag(lnum)
       let lnums[1] = lnum
     endif
 
-    if line =~? s:tag_start
+    if line =~? s:multiline_tag_start
       if line =~? s:empty_tag_start
         let lnums[0] = lnum
         return lnums
@@ -341,6 +342,7 @@ function! s:PrevMultilineEmptyTag(lnum)
 
     let lnum = lnum - 1
   endwhile
+  return [0, 0]
 endfunction
 
 function! s:Log(msg)

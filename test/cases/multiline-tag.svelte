@@ -1,0 +1,18 @@
+<div
+  class="a"
+  id="b"
+>
+  text
+  <input
+    type="text"
+    value={name}
+  >
+  <img
+    src="a.png"
+    alt="a"
+  />
+  <input type="checkbox"
+    checked
+  >
+  <p>end</p>
+</div>
