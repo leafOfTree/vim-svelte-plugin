@@ -277,13 +277,15 @@ highlight default link cssKeyFrameProp2 Constant
 " Syntax patch {{{
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Patch 7.4.1142
-if has("patch-7.4-1142")
-  if has("win32")
-    syn iskeyword @,48-57,_,128-167,224-235,$
-  else
-    syn iskeyword @,48-57,_,192-255,$
+" Add '$' to keyword characters for svelteKeyword, keeping others like '-'
+" from css.vim for css keywords such as font-size
+if has('patch-7.4.1142') && exists('*execute')
+  let s:iskeyword = matchstr(execute('syntax iskeyword'),
+        \ 'syntax iskeyword \zs\S\+')
+  if empty(s:iskeyword) || s:iskeyword ==# 'not'
+    let s:iskeyword = &iskeyword
   endif
+  execute 'syntax iskeyword '.s:iskeyword.',$'
 endif
 
 " Style
