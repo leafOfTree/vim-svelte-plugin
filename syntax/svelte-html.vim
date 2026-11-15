@@ -21,12 +21,15 @@ syntax match svelteComponentName containedin=htmlTagN '\vsvelte:\w*'
 syntax match htmlAttr '\v(\S|\<)@<![^\/\<\>[:blank:]]+'
       \ containedin=htmlTag
       \ contains=htmlString,svelteValue,htmlArg
+" Let a braced attribute value be parsed by the expression region.
+syntax match htmlAttr '\(\S\)\@<![^=/<>[:blank:]]\+={\@='
+      \ containedin=htmlTag contains=htmlArg,htmlAttrEqual nextgroup=svelteExpression
 syntax match htmlAttrEqual '\v\=' containedin=htmlAttr
 
 syntax match svelteAttr
-      \ '\(\S\)\@<!\w\+:[^=>[:blank:]]\+\(="[^"]*"\|={[^}]*}\)\?'
-      \ containedin=htmlTag 
-      \ contains=svelteKey,svelteValue
+      \ '\(\S\)\@<!\w\+:[^=>[:blank:]]\+=\?'
+      \ containedin=htmlTag
+      \ contains=svelteKey nextgroup=svelteExpression,htmlString
 syntax match svelteValue contained '{[^}]*}'
 syntax match svelteKey contained '\w\+:[^=>[:blank:]]\+'
 
